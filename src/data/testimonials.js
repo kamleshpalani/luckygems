@@ -1,0 +1,78 @@
+/**
+ * Testimonials data.
+ */
+
+export const TESTIMONIALS = [
+  {
+    id:       1,
+    name:     'Priya S.',
+    location: 'San Jose, CA',
+    service:  'Horoscope Reading',
+    rating:   5,
+    text:     'Dr. Gurudeva\'s reading was incredibly accurate. He described situations in my life that he couldn\'t have known without truly reading the chart. His gemstone recommendation has made a noticeable difference. Highly recommend.',
+    avatar:   'PS',
+  },
+  {
+    id:       2,
+    name:     'Rajesh K.',
+    location: 'Fremont, CA',
+    service:  'Career & Business Astrology',
+    rating:   5,
+    text:     'I was at a complete crossroads — two job offers and a business idea. Dr. Gurudeva\'s analysis was spot-on. He told me exactly which direction was supported by my chart and why. Six months later, I can confirm he was right.',
+    avatar:   'RK',
+  },
+  {
+    id:       3,
+    name:     'Ananya M.',
+    location: 'New York, NY',
+    service:  'Marriage Compatibility',
+    rating:   5,
+    text:     'We were nervous about the Manglik concern flagged by another astrologer. Dr. Gurudeva reviewed both charts carefully and reassured us with a thorough explanation. We are now happily married. Thank you!',
+    avatar:   'AM',
+  },
+  {
+    id:       4,
+    name:     'Suresh N.',
+    location: 'Houston, TX',
+    service:  'Muhurtham',
+    rating:   5,
+    text:     'We used Dr. Gurudeva for our house purchase Muhurtham and our son\'s business launch timing. Both have been tremendously positive. His knowledge of Panchanga is very thorough.',
+    avatar:   'SN',
+  },
+  {
+    id:       5,
+    name:     'Meena R.',
+    location: 'London, UK',
+    service:  'Gemstone Guidance',
+    rating:   5,
+    text:     'I had been wearing a gemstone recommended by someone else for years with no benefit. Dr. Gurudeva reviewed my chart and suggested a completely different stone. The results within a month were remarkable.',
+    avatar:   'MR',
+  },
+  {
+    id:       6,
+    name:     'Vikram P.',
+    location: 'Toronto, Canada',
+    service:  'Online Consultation',
+    rating:   5,
+    text:     'Being in Canada, the online video consultation was very convenient. Dr. Gurudeva is punctual, patient and thorough. He took time to explain everything clearly and answered all my questions. I will definitely consult again.',
+    avatar:   'VP',
+  },
+  {
+    id:       7,
+    name:     'Lakshmi T.',
+    location: 'Dallas, TX',
+    service:  'Sade Sati Guidance',
+    rating:   5,
+    text:     'I was going through the worst phase of my life and did not understand why. Dr. Gurudeva explained my Sade Sati clearly — without scary language — and gave me practical remedies. Things have genuinely improved.',
+    avatar:   'LT',
+  },
+  {
+    id:       8,
+    name:     'Arjun V.',
+    location: 'Seattle, WA',
+    service:  'Kaal Sarpa Dosha',
+    rating:   5,
+    text:     'I had been told by three different people that my KSD was severe and causing all my problems. Dr. Gurudeva analyzed it properly and told me it was moderate, with many neutralizing factors. Very honest and grounded.',
+    avatar:   'AV',
+  },
+];
