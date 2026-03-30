@@ -1,6 +1,6 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import React from "react";
+import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 
 export default function GemstoneCard({ gem, index = 0 }) {
   return (
@@ -14,19 +14,20 @@ export default function GemstoneCard({ gem, index = 0 }) {
         to={`/gemstones#${gem.slug}`}
         className="card-top-accent block p-5 group text-center relative overflow-hidden"
         style={{
-          background: 'linear-gradient(160deg, #FFFDF6 0%, #FFF8E8 100%)',
-          border: '1px solid rgba(201,150,12,0.18)',
-          borderRadius: '16px',
-          boxShadow: '0 4px 20px rgba(201,150,12,0.08)',
-          transition: 'all 0.35s cubic-bezier(0.4,0,0.2,1)',
+          background: "rgba(255,255,255,0.05)",
+          border: "1px solid rgba(201,150,12,0.22)",
+          borderRadius: "16px",
+          boxShadow: "0 4px 20px rgba(0,0,0,0.45)",
+          transition: "all 0.35s cubic-bezier(0.4,0,0.2,1)",
         }}
         onMouseEnter={(e) => {
-          e.currentTarget.style.transform = 'translateY(-6px)';
-          e.currentTarget.style.boxShadow = '0 16px 40px rgba(201,150,12,0.18), 0 6px 16px rgba(0,0,0,0.06)';
+          e.currentTarget.style.transform = "translateY(-6px)";
+          e.currentTarget.style.boxShadow =
+            "0 16px 40px rgba(0,0,0,0.55), 0 6px 16px rgba(201,150,12,0.15)";
         }}
         onMouseLeave={(e) => {
-          e.currentTarget.style.transform = '';
-          e.currentTarget.style.boxShadow = '0 4px 20px rgba(201,150,12,0.08)';
+          e.currentTarget.style.transform = "";
+          e.currentTarget.style.boxShadow = "0 4px 20px rgba(0,0,0,0.45)";
         }}
         aria-label={`${gem.name} gemstone guidance`}
       >
@@ -37,8 +38,8 @@ export default function GemstoneCard({ gem, index = 0 }) {
             className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-400"
             style={{
               background: `radial-gradient(circle, ${gem.color}55 0%, transparent 70%)`,
-              filter: 'blur(8px)',
-              transform: 'scale(1.4)',
+              filter: "blur(8px)",
+              transform: "scale(1.4)",
             }}
           />
           {/* Gem circle */}
@@ -53,7 +54,10 @@ export default function GemstoneCard({ gem, index = 0 }) {
             {/* Facet highlight */}
             <div
               className="absolute top-2 left-3 w-4 h-2.5 rounded-full rotate-[-20deg]"
-              style={{ background: 'rgba(255,255,255,0.55)', filter: 'blur(2px)' }}
+              style={{
+                background: "rgba(255,255,255,0.55)",
+                filter: "blur(2px)",
+              }}
             />
           </div>
         </div>
@@ -61,9 +65,9 @@ export default function GemstoneCard({ gem, index = 0 }) {
         <div
           className="inline-block text-[10px] font-semibold px-2 py-0.5 rounded-full mb-2"
           style={{
-            background: 'rgba(201,150,12,0.1)',
-            border: '1px solid rgba(201,150,12,0.25)',
-            color: '#9a6200',
+            background: "rgba(201,150,12,0.14)",
+            border: "1px solid rgba(201,150,12,0.35)",
+            color: "#EEC060",
           }}
         >
           {gem.planet}

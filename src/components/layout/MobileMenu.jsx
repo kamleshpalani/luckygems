@@ -1,15 +1,23 @@
-import React, { useState, useEffect } from 'react';
-import { Link, NavLink } from 'react-router-dom';
-import { X, ChevronDown, Phone, MessageCircle, CalendarDays } from 'lucide-react';
-import { NAV_ITEMS, CTA_NAV, CONTACT_INFO } from '../../data/navigation';
+import React, { useState, useEffect } from "react";
+import { Link, NavLink } from "react-router-dom";
+import {
+  X,
+  ChevronDown,
+  Phone,
+  MessageCircle,
+  CalendarDays,
+} from "lucide-react";
+import { NAV_ITEMS, CTA_NAV, CONTACT_INFO } from "../../data/navigation";
 
 export default function MobileMenu({ isOpen, onClose }) {
   const [openGroup, setOpenGroup] = useState(null);
 
   /* Lock body scroll when open */
   useEffect(() => {
-    document.body.style.overflow = isOpen ? 'hidden' : '';
-    return () => { document.body.style.overflow = ''; };
+    document.body.style.overflow = isOpen ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
   }, [isOpen]);
 
   if (!isOpen) return null;
@@ -25,19 +33,29 @@ export default function MobileMenu({ isOpen, onClose }) {
 
       {/* Drawer */}
       <aside
-        className="fixed inset-y-0 left-0 z-50 w-80 max-w-[90vw] bg-white flex flex-col shadow-large"
+        className="fixed inset-y-0 left-0 z-50 w-80 max-w-[90vw] flex flex-col shadow-large"
+        style={{
+          background: "rgba(12,5,20,0.97)",
+          backdropFilter: "blur(24px)",
+          WebkitBackdropFilter: "blur(24px)",
+          borderRight: "1px solid rgba(201,150,12,0.18)",
+        }}
         aria-label="Mobile navigation"
         role="dialog"
         aria-modal="true"
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-5 py-4 border-b border-stone-100">
-          <Link to="/" onClick={onClose} className="font-serif text-maroon-700 text-lg font-semibold">
+        <div className="flex items-center justify-between px-5 py-4 border-b border-white/10">
+          <Link
+            to="/"
+            onClick={onClose}
+            className="font-serif text-gold-300 text-lg font-semibold"
+          >
             Dr. Gurudeva
           </Link>
           <button
             onClick={onClose}
-            className="p-1.5 rounded-lg text-stone-500 hover:text-maroon-600 hover:bg-maroon-50 transition-colors"
+            className="p-1.5 rounded-lg text-stone-400 hover:text-gold-300 hover:bg-white/10 transition-colors"
             aria-label="Close menu"
           >
             <X size={20} />
@@ -50,10 +68,10 @@ export default function MobileMenu({ isOpen, onClose }) {
             item.children ? (
               <div key={item.path}>
                 <button
-                  className="w-full flex items-center justify-between px-3 py-3 rounded-lg text-sm font-medium text-stone-700 hover:text-maroon-600 hover:bg-maroon-50 transition-colors"
+                  className="w-full flex items-center justify-between px-3 py-3 rounded-lg text-sm font-medium text-stone-300 hover:text-gold-300 hover:bg-white/8 transition-colors"
                   onClick={() =>
                     setOpenGroup((prev) =>
-                      prev === item.path ? null : item.path
+                      prev === item.path ? null : item.path,
                     )
                   }
                   aria-expanded={openGroup === item.path}
@@ -61,19 +79,19 @@ export default function MobileMenu({ isOpen, onClose }) {
                   {item.label}
                   <ChevronDown
                     size={15}
-                    className={`text-stone-400 transition-transform duration-200 ${
-                      openGroup === item.path ? 'rotate-180' : ''
+                    className={`text-stone-500 transition-transform duration-200 ${
+                      openGroup === item.path ? "rotate-180" : ""
                     }`}
                   />
                 </button>
 
                 {openGroup === item.path && (
-                  <div className="ml-3 mb-1 border-l-2 border-maroon-100 pl-3">
+                  <div className="ml-3 mb-1 border-l-2 border-gold-600/30 pl-3">
                     <NavLink
                       to={item.path}
                       end
                       onClick={onClose}
-                      className="block py-2 text-xs text-stone-400 hover:text-maroon-600 font-semibold uppercase tracking-wider"
+                      className="block py-2 text-xs text-stone-500 hover:text-gold-300 font-semibold uppercase tracking-wider"
                     >
                       View All {item.label}
                     </NavLink>
@@ -85,8 +103,8 @@ export default function MobileMenu({ isOpen, onClose }) {
                         className={({ isActive }) =>
                           `block py-2 text-sm transition-colors ${
                             isActive
-                              ? 'text-maroon-600 font-semibold'
-                              : 'text-stone-600 hover:text-maroon-600'
+                              ? "text-gold-300 font-semibold"
+                              : "text-stone-400 hover:text-gold-300"
                           }`
                         }
                       >
@@ -100,24 +118,24 @@ export default function MobileMenu({ isOpen, onClose }) {
               <NavLink
                 key={item.path}
                 to={item.path}
-                end={item.path === '/'}
+                end={item.path === "/"}
                 onClick={onClose}
                 className={({ isActive }) =>
                   `block px-3 py-3 rounded-lg text-sm font-medium transition-colors ${
                     isActive
-                      ? 'text-maroon-600 bg-maroon-50 font-semibold'
-                      : 'text-stone-700 hover:text-maroon-600 hover:bg-maroon-50'
+                      ? "text-gold-300 bg-white/10 font-semibold"
+                      : "text-stone-300 hover:text-gold-300 hover:bg-white/8"
                   }`
                 }
               >
                 {item.label}
               </NavLink>
-            )
+            ),
           )}
         </nav>
 
         {/* Bottom CTA strip */}
-        <div className="p-4 border-t border-stone-100 space-y-2">
+        <div className="p-4 border-t border-white/10 space-y-2">
           <Link
             to={CTA_NAV.path}
             onClick={onClose}
