@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { Send, CheckCircle } from "lucide-react";
+import emailjs from "@emailjs/browser";
+import { supabase } from "../../lib/supabase";
 
 const SERVICES_LIST = [
   "Horoscope Reading",
@@ -32,10 +34,46 @@ export default function ContactForm({ compact = false }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    /* TODO: connect to backend/email service */
-    await new Promise((r) => setTimeout(r, 900));
-    setLoading(false);
-    setSubmitted(true);
+    try {
+      // ── Supabase: save to contact_messages table ──
+      await supabase.from("contact_messages").insert({
+        name: form.name,
+        email: form.email,
+        phone: form.phone,
+        service: form.service,
+        message: form.message,
+      });
+
+      // ── EmailJS: sends email directly to Dr. Gurudeva ──
+      await emailjs.send(
+        import.meta.env.VITE_EMAILJS_SERVICE_ID,
+        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+        {
+          from_name: form.name,
+          from_email: form.email,
+          phone: form.phone,
+          service: form.service,
+          message: form.message,
+        },
+        import.meta.env.VITE_EMAILJS_PUBLIC_KEY,
+      );
+
+      // ── Formspree: backup submission storage ──
+      await fetch(import.meta.env.VITE_FORMSPREE_ENDPOINT, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify(form),
+      });
+
+      setSubmitted(true);
+    } catch (_) {
+      alert("Failed to send message. Please call us directly at 732-448-0667.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   if (submitted) {

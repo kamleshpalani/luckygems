@@ -25,6 +25,7 @@ import {
 } from "lucide-react";
 import SEO from "../components/common/SEO";
 import Breadcrumbs from "../components/common/Breadcrumbs";
+import { supabase } from "../lib/supabase";
 
 /* ──────────────────────────────────────────────────────────
    DATA
@@ -217,10 +218,10 @@ function StepIndicator({ current }) {
                 transition={{ type: "spring", stiffness: 300, damping: 22 }}
                 className={`w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold border-2 transition-colors duration-300 ${
                   state === "done"
-                    ? "bg-gold-500/20 border-gold-400 text-gold-300 shadow-[0_0_12px_rgba(201,150,12,0.3)]"
+                    ? "bg-maroon-600 border-maroon-600 text-white"
                     : state === "active"
-                      ? "bg-white/10 border-gold-400 text-gold-300"
-                      : "bg-white/5 border-white/20 text-stone-400"
+                      ? "bg-white border-maroon-600 text-maroon-700 shadow-md shadow-maroon-200"
+                      : "bg-white border-stone-300 text-stone-400"
                 }`}
               >
                 {state === "done" ? <CheckCircle2 size={17} /> : i + 1}
@@ -228,10 +229,10 @@ function StepIndicator({ current }) {
               <span
                 className={`text-[11px] font-medium whitespace-nowrap transition-colors duration-300 ${
                   state === "active"
-                    ? "text-gold-300"
+                    ? "text-maroon-700"
                     : state === "done"
-                      ? "text-stone-300"
-                      : "text-stone-500"
+                      ? "text-maroon-500"
+                      : "text-stone-400"
                 }`}
               >
                 {label}
@@ -240,7 +241,7 @@ function StepIndicator({ current }) {
             {i < STEPS.length - 1 && (
               <div
                 className={`h-0.5 w-10 sm:w-16 mb-5 mx-1 rounded-full transition-colors duration-500 ${
-                  i < current ? "bg-gold-500" : "bg-white/15"
+                  i < current ? "bg-maroon-500" : "bg-stone-200"
                 }`}
               />
             )}
@@ -266,8 +267,8 @@ function ServiceCard({ service, selected, onSelect }) {
       whileTap={{ scale: 0.97 }}
       className={`relative text-left w-full rounded-2xl border-2 p-5 transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-maroon-400 ${
         active
-          ? "border-gold-500/60 shadow-[0_0_20px_rgba(201,150,12,0.2)]"
-          : "border-white/12 hover:border-gold-500/40 hover:shadow-md"
+          ? "border-maroon-500 bg-maroon-50 shadow-lg shadow-maroon-100"
+          : "border-stone-200 bg-white hover:border-maroon-300 hover:shadow-md"
       }`}
       style={{
         background: active ? "rgba(201,150,12,0.10)" : "rgba(255,255,255,0.04)",
@@ -307,20 +308,18 @@ function ServiceCard({ service, selected, onSelect }) {
 
       {/* Text */}
       <p
-        className={`font-semibold text-sm leading-snug mb-1 ${active ? "text-gold-300" : "text-stone-200"}`}
+        className={`font-semibold text-sm leading-snug mb-1 ${active ? "text-maroon-800" : "text-stone-900"}`}
       >
         {service.title}
       </p>
-      <p className="text-stone-400 text-xs leading-relaxed line-clamp-2">
+      <p className="text-stone-500 text-xs leading-relaxed line-clamp-2">
         {service.tagline}
       </p>
 
       {/* Price */}
       <div
         className={`mt-3 inline-flex items-center gap-1 text-xs font-bold px-2.5 py-1 rounded-full ${
-          active
-            ? "bg-gold-500/20 text-gold-300 border border-gold-500/40"
-            : "bg-white/8 text-stone-400 border border-white/10"
+          active ? "bg-maroon-600 text-white" : "bg-stone-100 text-stone-600"
         }`}
       >
         {service.price}
@@ -340,9 +339,9 @@ function FormField({ field, value, error, onChange, touched }) {
     <div className="flex flex-col gap-1">
       <label
         htmlFor={field.id}
-        className="text-sm font-semibold text-stone-300 flex items-center gap-1.5"
+        className="text-sm font-semibold text-stone-700 flex items-center gap-1.5"
       >
-        <Icon size={13} className="text-gold-400" />
+        <Icon size={13} className="text-maroon-500" />
         {field.label}
         <span className="text-maroon-500">*</span>
       </label>
@@ -355,10 +354,9 @@ function FormField({ field, value, error, onChange, touched }) {
           placeholder={field.placeholder}
           className={`w-full rounded-xl border px-4 py-3 text-sm backdrop-blur-sm transition-all duration-150 focus:outline-none focus:ring-2 ${
             hasError
-              ? "border-red-500/60 focus:ring-red-500/20 focus:border-red-500/60"
-              : "border-white/15 focus:ring-gold-500/20 focus:border-gold-500/50"
-          } placeholder:text-stone-500 text-stone-200`}
-          style={{ background: "rgba(255,255,255,0.07)" }}
+              ? "border-red-400 focus:ring-red-200 focus:border-red-400"
+              : "border-stone-300 focus:ring-maroon-200 focus:border-maroon-400"
+          } placeholder:text-stone-400 text-stone-800`}
         />
       </div>
       <AnimatePresence>
@@ -397,10 +395,10 @@ function ServiceSummaryBar({ service, onChange }) {
           <Icon size={16} className="text-white" />
         </div>
         <div>
-          <p className="font-semibold text-gold-300 text-sm leading-snug">
+          <p className="font-semibold text-maroon-900 text-sm leading-snug">
             {service.title}
           </p>
-          <p className="text-stone-400 text-xs">
+          <p className="text-maroon-600 text-xs">
             {service.price} · Email report within 24–48 hrs
           </p>
         </div>
@@ -438,7 +436,7 @@ function SuccessScreen({ service, values }) {
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
           transition={{ delay: 0.1, type: "spring", stiffness: 200 }}
-          className="w-24 h-24 rounded-full bg-gradient-to-br from-maroon-600 to-maroon-400 flex items-center justify-center shadow-xl shadow-maroon-900/40"
+          className="w-24 h-24 rounded-full bg-gradient-to-br from-maroon-600 to-maroon-400 flex items-center justify-center shadow-xl shadow-maroon-200"
         >
           <CheckCircle2 size={44} className="text-white" strokeWidth={2} />
         </motion.div>
@@ -464,13 +462,13 @@ function SuccessScreen({ service, values }) {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.35 }}
       >
-        <h2 className="font-serif text-2xl font-bold text-stone-200 mb-2">
+        <h2 className="font-serif text-2xl font-bold text-stone-900 mb-2">
           Request Submitted! 🙏
         </h2>
-        <p className="text-stone-400 text-sm max-w-md mx-auto leading-relaxed mb-6">
-          Namaste, <strong className="text-stone-200">{values.fullName}</strong>
+        <p className="text-stone-500 text-sm max-w-md mx-auto leading-relaxed mb-6">
+          Namaste, <strong className="text-stone-700">{values.fullName}</strong>
           ! Dr. Gurudeva has received your request for{" "}
-          <strong className="text-gold-300">{service.title}</strong>. You'll
+          <strong className="text-maroon-700">{service.title}</strong>. You'll
           receive a detailed report via email within{" "}
           <strong>24–48 hours</strong>.
         </p>
@@ -591,9 +589,16 @@ export default function InquiryPage() {
 
       setLoading(true);
       try {
-        // ── API integration point ──
-        // await fetch('/api/inquiry', { method: 'POST', body: JSON.stringify({ service: service.slug, ...values }) });
-        await new Promise((r) => setTimeout(r, 1600)); // simulate network
+        const { error } = await supabase.from("inquiries").insert({
+          service: service.slug,
+          service_title: service.title,
+          full_name: values.fullName,
+          dob: values.dob,
+          time_of_birth: values.timeOfBirth,
+          place_of_birth: values.placeOfBirth,
+          present_location: values.presentLocation,
+        });
+        if (error) throw error;
         goTo(2);
       } catch (_) {
         alert("Something went wrong. Please try again or call us directly.");
@@ -663,15 +668,7 @@ export default function InquiryPage() {
           </div>
 
           {/* Glass card */}
-          <div
-            className="rounded-3xl overflow-hidden"
-            style={{
-              background: "rgba(255,255,255,0.05)",
-              border: "1px solid rgba(255,255,255,0.10)",
-              backdropFilter: "blur(28px)",
-              WebkitBackdropFilter: "blur(28px)",
-            }}
-          >
+          <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-xl border border-stone-200/60 overflow-hidden">
             <AnimatePresence mode="wait" custom={dir}>
               {/* ── STEP 0: Service Selection ── */}
               {step === 0 && (
@@ -773,8 +770,10 @@ export default function InquiryPage() {
                         <p className="font-semibold text-gold-300 text-sm mb-1">
                           Dr. Gurudeva Astrologer
                         </p>
-                        <div className="text-stone-300 text-sm leading-relaxed space-y-0.5">
-                          <p className="font-medium text-stone-200">Namaste,</p>
+                        <div className="text-stone-700 text-sm leading-relaxed space-y-0.5">
+                          <p className="font-medium text-maroon-800">
+                            Namaste,
+                          </p>
                           <p>Dr. Gurudeva Astrologer here.</p>
                           <p>Please send your birth details below:</p>
                           <div className="mt-2 text-stone-400 text-xs space-y-0.5">
