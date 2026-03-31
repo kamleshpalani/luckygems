@@ -1,28 +1,49 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { CreditCard, CheckCircle, ShoppingBag, Mail, ExternalLink, DollarSign, Info } from 'lucide-react';
-import SEO from '../components/common/SEO';
-import SectionWrapper, { SectionHeader } from '../components/common/SectionWrapper';
-import Breadcrumbs from '../components/common/Breadcrumbs';
-import CTASection from '../components/common/CTASection';
-import { PRICING_PLANS, SPECIALTY_PRICING, PAYMENT_METHODS } from '../data/pricing';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
+import {
+  CreditCard,
+  CheckCircle,
+  ShoppingBag,
+  Mail,
+  ExternalLink,
+  DollarSign,
+  Info,
+} from "lucide-react";
+import SEO from "../components/common/SEO";
+import SectionWrapper, {
+  SectionHeader,
+} from "../components/common/SectionWrapper";
+import Breadcrumbs from "../components/common/Breadcrumbs";
+import CTASection from "../components/common/CTASection";
+import {
+  PRICING_PLANS,
+  SPECIALTY_PRICING,
+  PAYMENT_METHODS,
+} from "../data/pricing";
 
-const PAYPAL_EMAIL = 'doctor_deva@yahoo.com';
+const PAYPAL_EMAIL = "doctor_deva@yahoo.com";
 
 const AFTER_PAYMENT = [
-  'Send your details (name, date/time/place of birth) to gurudeva_trust@yahoo.com after payment.',
-  'Dr. Gurudeva will confirm receipt and schedule your request within 24 hours.',
-  'For phone consultations, Dr. Gurudeva will call you at the arranged time.',
-  'For email/online services, the report will be delivered within 48 hours.',
-  'For poojas and homas, scheduling information will be emailed within 24 hours.',
+  "Send your details (name, date/time/place of birth) to gurudeva_trust@yahoo.com after payment.",
+  "Dr. Gurudeva will confirm receipt and schedule your request within 24 hours.",
+  "For phone consultations, Dr. Gurudeva will call you at the arranged time.",
+  "For email/online services, the report will be delivered within 48 hours.",
+  "For poojas and homas, scheduling information will be emailed within 24 hours.",
 ];
 
-function PayPalForm({ itemName, itemNumber, amount, setAmount, accentClass, buttonClass }) {
+function PayPalForm({
+  itemName,
+  itemNumber,
+  amount,
+  setAmount,
+  accentClass,
+  buttonClass,
+}) {
   const handleSubmit = (e) => {
     if (!amount || isNaN(amount) || parseFloat(amount) <= 0) {
       e.preventDefault();
-      alert('Please enter a valid amount before proceeding to PayPal.');
+      alert("Please enter a valid amount before proceeding to PayPal.");
     }
   };
 
@@ -34,19 +55,21 @@ function PayPalForm({ itemName, itemNumber, amount, setAmount, accentClass, butt
       onSubmit={handleSubmit}
       className="space-y-4"
     >
-      <input type="hidden" name="cmd"           value="_xclick" />
-      <input type="hidden" name="business"      value={PAYPAL_EMAIL} />
-      <input type="hidden" name="item_name"     value={itemName} />
-      <input type="hidden" name="item_number"   value={itemNumber} />
+      <input type="hidden" name="cmd" value="_xclick" />
+      <input type="hidden" name="business" value={PAYPAL_EMAIL} />
+      <input type="hidden" name="item_name" value={itemName} />
+      <input type="hidden" name="item_number" value={itemNumber} />
       <input type="hidden" name="currency_code" value="USD" />
-      <input type="hidden" name="no_shipping"   value="1" />
+      <input type="hidden" name="no_shipping" value="1" />
 
       <div>
         <label className="block text-sm font-semibold text-stone-700 mb-1.5">
           Amount (USD)
         </label>
         <div className="relative">
-          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-stone-500 font-semibold text-lg">$</span>
+          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-stone-500 font-semibold text-lg">
+            $
+          </span>
           <input
             type="number"
             name="amount"
@@ -69,7 +92,9 @@ function PayPalForm({ itemName, itemNumber, amount, setAmount, accentClass, butt
           src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/PP_logo_h_100x26.png"
           alt="PayPal"
           className="h-5 object-contain"
-          onError={(e) => { e.target.style.display = 'none'; }}
+          onError={(e) => {
+            e.target.style.display = "none";
+          }}
         />
         Pay Now via PayPal
         <ExternalLink size={14} />
@@ -83,8 +108,8 @@ function PayPalForm({ itemName, itemNumber, amount, setAmount, accentClass, butt
 }
 
 export default function PaymentPage() {
-  const [serviceAmount, setServiceAmount]  = useState('');
-  const [productAmount, setProductAmount]  = useState('');
+  const [serviceAmount, setServiceAmount] = useState("");
+  const [productAmount, setProductAmount] = useState("");
 
   return (
     <>
@@ -97,7 +122,7 @@ export default function PaymentPage() {
       {/* Hero */}
       <section className="bg-gradient-to-br from-stone-800 to-stone-900 text-white py-8 md:py-14 lg:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Breadcrumbs crumbs={[{ label: 'Payment', path: '/payment' }]} />
+          <Breadcrumbs crumbs={[{ label: "Payment", path: "/payment" }]} />
           <motion.div
             initial={{ opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
@@ -109,7 +134,8 @@ export default function PaymentPage() {
               Payments
             </h1>
             <p className="text-stone-300 text-lg leading-relaxed">
-              Pay securely via PayPal for consultations, poojas, gemstones, and products. Enter your amount and proceed.
+              Pay securely via PayPal for consultations, poojas, gemstones, and
+              products. Enter your amount and proceed.
             </p>
           </motion.div>
         </div>
@@ -124,7 +150,6 @@ export default function PaymentPage() {
         />
 
         <div className="grid md:grid-cols-2 gap-8 max-w-3xl mx-auto">
-
           {/* Box 1 — Services / Email / Website */}
           <motion.div
             initial={{ opacity: 0, y: 16 }}
@@ -142,14 +167,24 @@ export default function PaymentPage() {
                   Services / Email / Website Requests
                 </h2>
                 <p className="text-xs text-maroon-600 mt-0.5">
-                  Horoscope reading, Kundli matching, Muhurthams &amp; all standard services
+                  Horoscope reading, Kundli matching, Muhurthams &amp; all
+                  standard services
                 </p>
               </div>
             </div>
 
             <div className="flex flex-wrap gap-2">
-              {['$21 — Standard service', '$31 — In-person', '$51 — Vivaha Muhurtham'].map((hint) => (
-                <span key={hint} className="text-xs bg-maroon-100 text-maroon-700 px-2.5 py-1 rounded-full font-medium">{hint}</span>
+              {[
+                "$21 — Standard service",
+                "$31 — In-person",
+                "$51 — Vivaha Muhurtham",
+              ].map((hint) => (
+                <span
+                  key={hint}
+                  className="text-xs bg-maroon-100 text-maroon-700 px-2.5 py-1 rounded-full font-medium"
+                >
+                  {hint}
+                </span>
               ))}
             </div>
 
@@ -168,7 +203,13 @@ export default function PaymentPage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.4, delay: 0.1 }}
-            className="rounded-2xl border-2 border-gold-300 bg-amber-50 p-7 flex flex-col gap-5"
+            className="rounded-2xl border-2 p-7 flex flex-col gap-5"
+            style={{
+              background: "rgba(201,150,12,0.08)",
+              border: "2px solid rgba(201,150,12,0.40)",
+              backdropFilter: "blur(16px)",
+              WebkitBackdropFilter: "blur(16px)",
+            }}
           >
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-full bg-gold-500 flex items-center justify-center flex-shrink-0">
@@ -185,8 +226,24 @@ export default function PaymentPage() {
             </div>
 
             <div className="flex flex-wrap gap-2">
-              {['$101 — Graha Santhi', '$151 — Sani / Navagraha', '$251 — Manglik', '$501 — Homam', '$200 — Yantras'].map((hint) => (
-                <span key={hint} className="text-xs bg-amber-100 text-amber-800 px-2.5 py-1 rounded-full font-medium">{hint}</span>
+              {[
+                "$101 — Graha Santhi",
+                "$151 — Sani / Navagraha",
+                "$251 — Manglik",
+                "$501 — Homam",
+                "$200 — Yantras",
+              ].map((hint) => (
+                <span
+                  key={hint}
+                  className="text-xs px-2.5 py-1 rounded-full font-medium"
+                  style={{
+                    background: "rgba(201,150,12,0.15)",
+                    border: "1px solid rgba(201,150,12,0.30)",
+                    color: "#EEC060",
+                  }}
+                >
+                  {hint}
+                </span>
               ))}
             </div>
 
@@ -201,37 +258,77 @@ export default function PaymentPage() {
         </div>
 
         {/* Info note */}
-        <div className="mt-8 max-w-3xl mx-auto flex items-start gap-3 bg-stone-50 border border-stone-200 rounded-xl p-4">
+        <div
+          className="mt-8 max-w-3xl mx-auto flex items-start gap-3 rounded-xl p-4"
+          style={{
+            background: "rgba(255,255,255,0.05)",
+            border: "1px solid rgba(255,255,255,0.10)",
+          }}
+        >
           <Info size={16} className="text-stone-400 flex-shrink-0 mt-0.5" />
           <p className="text-sm text-stone-600 leading-relaxed">
-            After completing payment, please email your details (name, date/time/place of birth, and service requested) to{' '}
-            <a href="mailto:gurudeva_trust@yahoo.com" className="text-maroon-600 font-medium hover:underline">gurudeva_trust@yahoo.com</a>.
-            {' '}Dr. Gurudeva will confirm your request within 24 hours. For queries, call{' '}
-            <a href="tel:+17324480667" className="text-maroon-600 font-medium hover:underline">732-448-0667</a>.
+            After completing payment, please email your details (name,
+            date/time/place of birth, and service requested) to{" "}
+            <a
+              href="mailto:gurudeva_trust@yahoo.com"
+              className="text-maroon-600 font-medium hover:underline"
+            >
+              gurudeva_trust@yahoo.com
+            </a>
+            . Dr. Gurudeva will confirm your request within 24 hours. For
+            queries, call{" "}
+            <a
+              href="tel:+17324480667"
+              className="text-maroon-600 font-medium hover:underline"
+            >
+              732-448-0667
+            </a>
+            .
           </p>
         </div>
       </SectionWrapper>
 
       {/* Consultation plans */}
       <SectionWrapper variant="ivory">
-        <SectionHeader label="Consultation Fees" title="Standard Consultation Plans" subtitle="All prices are in USD." />
+        <SectionHeader
+          label="Consultation Fees"
+          title="Standard Consultation Plans"
+          subtitle="All prices are in USD."
+        />
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b-2 border-gold-300">
-                <th className="text-left py-3 pr-4 font-semibold text-stone-700">Plan</th>
-                <th className="text-left py-3 pr-4 font-semibold text-stone-700">Duration</th>
-                <th className="text-left py-3 pr-4 font-semibold text-stone-700">Price</th>
-                <th className="text-left py-3 font-semibold text-stone-700">What's Included</th>
+                <th className="text-left py-3 pr-4 font-semibold text-stone-700">
+                  Plan
+                </th>
+                <th className="text-left py-3 pr-4 font-semibold text-stone-700">
+                  Duration
+                </th>
+                <th className="text-left py-3 pr-4 font-semibold text-stone-700">
+                  Price
+                </th>
+                <th className="text-left py-3 font-semibold text-stone-700">
+                  What's Included
+                </th>
               </tr>
             </thead>
             <tbody>
               {PRICING_PLANS.map(({ name, duration, price, includes }) => (
-                <tr key={name} className="border-b border-stone-200 hover:bg-ivory-100 transition-colors">
-                  <td className="py-3 pr-4 font-semibold text-stone-800">{name}</td>
+                <tr
+                  key={name}
+                  className="border-b border-white/8 hover:bg-white/5 transition-colors"
+                >
+                  <td className="py-3 pr-4 font-semibold text-stone-800">
+                    {name}
+                  </td>
                   <td className="py-3 pr-4 text-stone-600">{duration}</td>
-                  <td className="py-3 pr-4 text-maroon-700 font-bold">{price}</td>
-                  <td className="py-3 text-stone-500">{(includes || []).slice(0, 2).join(', ')}</td>
+                  <td className="py-3 pr-4 text-maroon-700 font-bold">
+                    {price}
+                  </td>
+                  <td className="py-3 text-stone-500">
+                    {(includes || []).slice(0, 2).join(", ")}
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -241,20 +338,33 @@ export default function PaymentPage() {
 
       {/* Specialty pricing */}
       <SectionWrapper variant="white">
-        <SectionHeader label="Specialty Services" title="Specialty Report Pricing" subtitle="Written reports, charts, and specialized analysis." />
+        <SectionHeader
+          label="Specialty Services"
+          title="Specialty Report Pricing"
+          subtitle="Written reports, charts, and specialized analysis."
+        />
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b-2 border-gold-300">
-                <th className="text-left py-3 pr-4 font-semibold text-stone-700">Service</th>
-                <th className="text-left py-3 font-semibold text-stone-700">Price</th>
+                <th className="text-left py-3 pr-4 font-semibold text-stone-700">
+                  Service
+                </th>
+                <th className="text-left py-3 font-semibold text-stone-700">
+                  Price
+                </th>
               </tr>
             </thead>
             <tbody>
               {SPECIALTY_PRICING.map(({ service, price }) => (
-                <tr key={service} className="border-b border-stone-200 hover:bg-ivory-100 transition-colors">
+                <tr
+                  key={service}
+                  className="border-b border-white/8 hover:bg-white/5 transition-colors"
+                >
                   <td className="py-2.5 pr-4 text-stone-700">{service}</td>
-                  <td className="py-2.5 text-maroon-700 font-semibold">{price}</td>
+                  <td className="py-2.5 text-maroon-700 font-semibold">
+                    {price}
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -264,7 +374,11 @@ export default function PaymentPage() {
 
       {/* Payment methods */}
       <SectionWrapper variant="ivory">
-        <SectionHeader label="How to Pay" title="Accepted Payment Methods" subtitle="PayPal is the preferred and most secure method." />
+        <SectionHeader
+          label="How to Pay"
+          title="Accepted Payment Methods"
+          subtitle="PayPal is the preferred and most secure method."
+        />
         <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-4">
           {PAYMENT_METHODS.map(({ name, details }, i) => (
             <motion.div
@@ -273,7 +387,7 @@ export default function PaymentPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.35, delay: i * 0.07 }}
-              className="bg-white rounded-xl border border-stone-200 p-4 text-center"
+              className="card p-4 text-center"
             >
               <CreditCard size={18} className="text-gold-500 mx-auto mb-2" />
               <p className="font-semibold text-stone-800 text-sm">{name}</p>
@@ -290,7 +404,10 @@ export default function PaymentPage() {
           <ul className="space-y-3">
             {AFTER_PAYMENT.map((step, i) => (
               <li key={i} className="flex items-start gap-2.5 text-stone-700">
-                <CheckCircle size={14} className="text-gold-500 mt-0.5 flex-shrink-0" />
+                <CheckCircle
+                  size={14}
+                  className="text-gold-500 mt-0.5 flex-shrink-0"
+                />
                 {step}
               </li>
             ))}
@@ -301,8 +418,8 @@ export default function PaymentPage() {
       <CTASection
         heading="Questions Before Paying?"
         subtext="Call Dr. Gurudeva directly on 732-448-0667 (9 AM–9 PM EST, 7 days). Free first-time phone consultation available."
-        primaryCTA={{ label: 'Book a Consultation', href: '/book' }}
-        secondaryCTA={{ label: 'View All Services', href: '/services' }}
+        primaryCTA={{ label: "Book a Consultation", href: "/book" }}
+        secondaryCTA={{ label: "View All Services", href: "/services" }}
       />
     </>
   );

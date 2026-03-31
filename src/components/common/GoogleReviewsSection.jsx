@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
-import { Star } from 'lucide-react';
-import { motion } from 'framer-motion';
-import SectionWrapper, { SectionHeader } from './SectionWrapper';
+import React, { useState } from "react";
+import { Star } from "lucide-react";
+import { motion } from "framer-motion";
+import SectionWrapper, { SectionHeader } from "./SectionWrapper";
 import {
   GOOGLE_RATING,
   GOOGLE_REVIEW_COUNT,
   GOOGLE_REVIEW_URL,
   GOOGLE_REVIEWS,
-} from '../../data/googleReviews';
+} from "../../data/googleReviews";
 
 /* ── Google "G" SVG logo ──────────────────────────────── */
 function GoogleLogo({ size = 22 }) {
@@ -42,13 +42,16 @@ function GoogleLogo({ size = 22 }) {
 /* ── Five-star row ────────────────────────────────────── */
 function StarRow({ rating = 5, size = 14 }) {
   return (
-    <div className="flex items-center gap-0.5" aria-label={`${rating} out of 5 stars`}>
+    <div
+      className="flex items-center gap-0.5"
+      aria-label={`${rating} out of 5 stars`}
+    >
       {Array.from({ length: 5 }).map((_, i) => (
         <Star
           key={i}
           size={size}
-          className={i < rating ? 'text-[#fbbc05]' : 'text-stone-300'}
-          fill={i < rating ? 'currentColor' : 'none'}
+          className={i < rating ? "text-[#fbbc05]" : "text-stone-600/40"}
+          fill={i < rating ? "currentColor" : "none"}
         />
       ))}
     </div>
@@ -61,7 +64,9 @@ function GoogleReviewCard({ review, index }) {
   const TRUNCATE = 160;
   const long = review.text.length > TRUNCATE;
   const displayText =
-    long && !expanded ? review.text.slice(0, TRUNCATE).trimEnd() + '…' : review.text;
+    long && !expanded
+      ? review.text.slice(0, TRUNCATE).trimEnd() + "…"
+      : review.text;
 
   return (
     <motion.div
@@ -69,7 +74,7 @@ function GoogleReviewCard({ review, index }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.35, delay: index * 0.07 }}
-      className="bg-white rounded-2xl border border-stone-200 shadow-sm hover:shadow-md transition-shadow duration-200 p-5 flex flex-col gap-3"
+      className="card p-5 flex flex-col gap-3 hover:shadow-md transition-all duration-200"
     >
       {/* Header: avatar + name + date */}
       <div className="flex items-center gap-3">
@@ -81,7 +86,9 @@ function GoogleReviewCard({ review, index }) {
           {review.initial}
         </div>
         <div className="flex-1 min-w-0">
-          <p className="font-semibold text-stone-900 text-sm leading-snug truncate">{review.name}</p>
+          <p className="font-semibold text-stone-900 text-sm leading-snug truncate">
+            {review.name}
+          </p>
           <p className="text-stone-400 text-xs mt-0.5">{review.relativeDate}</p>
         </div>
         <div className="flex-shrink-0 opacity-70">
@@ -100,7 +107,7 @@ function GoogleReviewCard({ review, index }) {
             onClick={() => setExpanded(!expanded)}
             className="ml-1 text-blue-600 hover:underline text-xs font-medium"
           >
-            {expanded ? 'less' : 'more'}
+            {expanded ? "less" : "more"}
           </button>
         )}
       </p>
@@ -124,15 +131,26 @@ export default function GoogleReviewsSection() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.4 }}
-        className="flex flex-col sm:flex-row items-center justify-center gap-5 mb-10 bg-white border border-stone-200 rounded-2xl shadow-sm px-6 py-5 max-w-md mx-auto"
+        className="flex flex-col sm:flex-row items-center justify-center gap-5 mb-10 rounded-2xl px-6 py-5 max-w-md mx-auto"
+        style={{
+          background: "rgba(255,255,255,0.06)",
+          border: "1px solid rgba(201,150,12,0.22)",
+          backdropFilter: "blur(16px)",
+          WebkitBackdropFilter: "blur(16px)",
+        }}
       >
         {/* Google logo + "Reviews" label */}
         <div className="flex items-center gap-2">
           <GoogleLogo size={28} />
-          <span className="font-semibold text-stone-700 text-sm">Google Reviews</span>
+          <span className="font-semibold text-stone-700 text-sm">
+            Google Reviews
+          </span>
         </div>
 
-        <div className="hidden sm:block h-8 w-px bg-stone-200" aria-hidden="true" />
+        <div
+          className="hidden sm:block h-8 w-px bg-white/15"
+          aria-hidden="true"
+        />
 
         {/* Score */}
         <div className="flex items-center gap-2">
@@ -161,7 +179,12 @@ export default function GoogleReviewsSection() {
           href={GOOGLE_REVIEW_URL}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 border border-stone-300 hover:border-stone-400 bg-white hover:bg-stone-50 text-stone-700 font-medium text-sm px-6 py-2.5 rounded-xl shadow-sm transition-all duration-200"
+          className="inline-flex items-center gap-2 font-medium text-sm px-6 py-2.5 rounded-xl transition-all duration-200"
+          style={{
+            background: "rgba(255,255,255,0.06)",
+            border: "1px solid rgba(201,150,12,0.35)",
+            color: "#EEC060",
+          }}
         >
           <GoogleLogo size={16} />
           See all reviews on Google
