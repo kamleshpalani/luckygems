@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+git cimport React, { useState } from 'react';
 import { Send, CheckCircle } from 'lucide-react';
 
 const SERVICES_LIST = [

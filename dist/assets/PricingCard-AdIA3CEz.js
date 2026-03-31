@@ -1,0 +1,11 @@
+import{j as e,m as r}from"./animations-CT27Sqvd.js";import{L as l}from"./vendor-8wYvoTA0.js";import{o as s}from"./index-BrrHV9Tv.js";/**
+ * @license lucide-react v0.376.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */const n=s("Check",[["path",{d:"M20 6 9 17l-5-5",key:"1gmf2c"}]]);/**
+ * @license lucide-react v0.376.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */const m=s("Zap",[["path",{d:"M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z",key:"1xq2db"}]]);function f({plan:t,index:o=0}){return e.jsxs(r.div,{initial:{opacity:0,y:20},whileInView:{opacity:1,y:0},viewport:{once:!0},transition:{duration:.4,delay:o*.1},className:`relative rounded-2xl p-7 flex flex-col h-full border-2 transition-shadow duration-200 ${t.popular?"border-maroon-400 bg-maroon-50 shadow-maroon":"border-stone-200 bg-white shadow-soft hover:shadow-medium"}`,children:[t.popular&&e.jsx("div",{className:"absolute -top-3.5 left-1/2 -translate-x-1/2",children:e.jsxs("span",{className:"inline-flex items-center gap-1 bg-maroon-500 text-white text-xs font-semibold px-3 py-1 rounded-full",children:[e.jsx(m,{size:11,fill:"currentColor"}),"Most Popular"]})}),e.jsxs("div",{className:"mb-6",children:[e.jsx("h3",{className:"font-serif text-xl font-semibold text-stone-900 mb-1",children:t.name}),e.jsx("p",{className:"text-stone-500 text-sm",children:t.description}),e.jsxs("div",{className:"flex items-baseline gap-1.5 mt-4",children:[e.jsx("span",{className:"font-serif text-4xl font-bold text-maroon-600",children:t.price}),e.jsxs("span",{className:"text-stone-400 text-sm",children:["/ ",t.duration]})]})]}),e.jsx("ul",{className:"space-y-3 mb-7 flex-1",children:t.includes.map((a,i)=>e.jsxs("li",{className:"flex items-start gap-2.5 text-sm text-stone-700",children:[e.jsx(n,{size:14,className:"text-maroon-500 flex-shrink-0 mt-0.5"}),a]},i))}),e.jsx(l,{to:"/book",className:`w-full text-center py-3 rounded-xl font-medium text-sm transition-all ${t.popular?"btn-primary justify-center":"btn-outline justify-center"}`,state:{plan:t.id},children:t.cta})]})}export{f as P};
