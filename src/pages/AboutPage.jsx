@@ -54,7 +54,7 @@ export default function AboutPage() {
   return (
     <>
       <SEO
-        title="About Dr. Gurudeva – Famous Indian Vedic Astrologer in USA | Luckygemfinder"
+        title="About Dr. Gurudeva – Famous Indian Vedic Astrologer in USA | Gurudev Astrology"
         description="Dr. Gurudeva is a world-renowned traditional Indian Vedic astrologer based in Highland Park, NJ. Introduced to astrology at age 7 by his grandfather — a family heritage spanning generations. Call 732-448-0667 for a free phone consultation."
         canonical="/about"
       />

@@ -100,7 +100,7 @@ export default function Header() {
               </div>
               <div className="leading-none">
                 <div className="font-serif text-white font-semibold text-base group-hover:text-gold-300 transition-colors">
-                  Dr. Gurudeva
+                  Gurudev Astrology
                 </div>
                 <div className="text-[10px] text-gold-400 tracking-[0.15em] uppercase font-sans">
                   Vedic Astrologer
@@ -147,13 +147,6 @@ export default function Header() {
 
             {/* Desktop CTA */}
             <div className="hidden lg:flex items-center gap-3">
-              <a
-                href={`tel:${CONTACT_INFO.phone}`}
-                className="btn-secondary !py-2 !px-4 !text-xs"
-              >
-                <Phone size={13} />
-                Call Now
-              </a>
               <Link
                 to="/inquiry"
                 className="btn-outline !py-2 !px-4 !text-xs hidden xl:inline-flex"

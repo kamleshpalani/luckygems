@@ -803,7 +803,7 @@ export default function ChatBot() {
                   </form>
                 )}
                 <p className="text-center text-stone-400 text-[10px] mt-2">
-                  Powered by LuckyGems ·{" "}
+                  Powered by Gurudev Astrology ·{" "}
                   <a
                     href={`tel:${CONTACT_INFO.phone}`}
                     className="underline hover:text-maroon-500"

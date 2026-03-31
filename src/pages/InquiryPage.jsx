@@ -228,10 +228,10 @@ function StepIndicator({ current }) {
               <span
                 className={`text-[11px] font-medium whitespace-nowrap transition-colors duration-300 ${
                   state === "active"
-                    ? "text-maroon-700"
+                    ? "text-gold-300"
                     : state === "done"
-                      ? "text-maroon-500"
-                      : "text-stone-400"
+                      ? "text-stone-300"
+                      : "text-stone-500"
                 }`}
               >
                 {label}
@@ -307,11 +307,11 @@ function ServiceCard({ service, selected, onSelect }) {
 
       {/* Text */}
       <p
-        className={`font-semibold text-sm leading-snug mb-1 ${active ? "text-maroon-800" : "text-stone-900"}`}
+        className={`font-semibold text-sm leading-snug mb-1 ${active ? "text-gold-300" : "text-stone-200"}`}
       >
         {service.title}
       </p>
-      <p className="text-stone-500 text-xs leading-relaxed line-clamp-2">
+      <p className="text-stone-400 text-xs leading-relaxed line-clamp-2">
         {service.tagline}
       </p>
 
@@ -340,9 +340,9 @@ function FormField({ field, value, error, onChange, touched }) {
     <div className="flex flex-col gap-1">
       <label
         htmlFor={field.id}
-        className="text-sm font-semibold text-stone-700 flex items-center gap-1.5"
+        className="text-sm font-semibold text-stone-300 flex items-center gap-1.5"
       >
-        <Icon size={13} className="text-maroon-500" />
+        <Icon size={13} className="text-gold-400" />
         {field.label}
         <span className="text-maroon-500">*</span>
       </label>
@@ -383,7 +383,13 @@ function FormField({ field, value, error, onChange, touched }) {
 function ServiceSummaryBar({ service, onChange }) {
   const Icon = service.icon;
   return (
-    <div className="flex items-center justify-between gap-3 bg-maroon-50 border border-maroon-200 rounded-2xl px-5 py-3.5 mb-6">
+    <div
+      className="flex items-center justify-between gap-3 rounded-2xl px-5 py-3.5 mb-6"
+      style={{
+        background: "rgba(201,150,12,0.08)",
+        border: "1px solid rgba(201,150,12,0.30)",
+      }}
+    >
       <div className="flex items-center gap-3">
         <div
           className={`w-9 h-9 rounded-xl bg-gradient-to-br ${service.color} flex items-center justify-center flex-shrink-0`}
@@ -391,10 +397,10 @@ function ServiceSummaryBar({ service, onChange }) {
           <Icon size={16} className="text-white" />
         </div>
         <div>
-          <p className="font-semibold text-maroon-900 text-sm leading-snug">
+          <p className="font-semibold text-gold-300 text-sm leading-snug">
             {service.title}
           </p>
-          <p className="text-maroon-600 text-xs">
+          <p className="text-stone-400 text-xs">
             {service.price} · Email report within 24–48 hrs
           </p>
         </div>
@@ -402,7 +408,7 @@ function ServiceSummaryBar({ service, onChange }) {
       <button
         type="button"
         onClick={onChange}
-        className="text-xs text-maroon-600 hover:text-maroon-800 border border-maroon-300 hover:border-maroon-500 px-3 py-1.5 rounded-full transition-colors flex-shrink-0"
+        className="text-xs text-gold-400 hover:text-gold-300 border border-gold-600/40 hover:border-gold-500/60 px-3 py-1.5 rounded-full transition-colors flex-shrink-0"
       >
         Change
       </button>
@@ -432,7 +438,7 @@ function SuccessScreen({ service, values }) {
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
           transition={{ delay: 0.1, type: "spring", stiffness: 200 }}
-          className="w-24 h-24 rounded-full bg-gradient-to-br from-maroon-600 to-maroon-400 flex items-center justify-center shadow-xl shadow-maroon-200"
+          className="w-24 h-24 rounded-full bg-gradient-to-br from-maroon-600 to-maroon-400 flex items-center justify-center shadow-xl shadow-maroon-900/40"
         >
           <CheckCircle2 size={44} className="text-white" strokeWidth={2} />
         </motion.div>
@@ -458,13 +464,13 @@ function SuccessScreen({ service, values }) {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.35 }}
       >
-        <h2 className="font-serif text-2xl font-bold text-stone-900 mb-2">
+        <h2 className="font-serif text-2xl font-bold text-stone-200 mb-2">
           Request Submitted! 🙏
         </h2>
-        <p className="text-stone-500 text-sm max-w-md mx-auto leading-relaxed mb-6">
-          Namaste, <strong className="text-stone-700">{values.fullName}</strong>
+        <p className="text-stone-400 text-sm max-w-md mx-auto leading-relaxed mb-6">
+          Namaste, <strong className="text-stone-200">{values.fullName}</strong>
           ! Dr. Gurudeva has received your request for{" "}
-          <strong className="text-maroon-700">{service.title}</strong>. You'll
+          <strong className="text-gold-300">{service.title}</strong>. You'll
           receive a detailed report via email within{" "}
           <strong>24–48 hours</strong>.
         </p>
@@ -649,10 +655,7 @@ export default function InquiryPage() {
       </section>
 
       {/* ── Main card ── */}
-      <div
-        ref={topRef}
-        className="min-h-screen bg-gradient-to-b from-stone-100 to-stone-50 py-8 px-4 sm:px-6"
-      >
+      <div ref={topRef} className="min-h-screen py-8 px-4 sm:px-6">
         <div className="max-w-3xl mx-auto">
           {/* Step indicator */}
           <div className="mb-8">
@@ -683,7 +686,7 @@ export default function InquiryPage() {
                   className="p-6 sm:p-8"
                 >
                   <div className="mb-6">
-                    <h2 className="font-serif text-2xl font-bold text-stone-900 mb-1">
+                    <h2 className="font-serif text-2xl font-bold text-stone-100 mb-1">
                       Choose a Service
                     </h2>
                     <p className="text-stone-500 text-sm">
@@ -710,7 +713,7 @@ export default function InquiryPage() {
                   </div>
 
                   {/* CTA */}
-                  <div className="flex items-center justify-between pt-4 border-t border-stone-100">
+                  <div className="flex items-center justify-between pt-4 border-t border-white/10">
                     <p className="text-stone-400 text-xs">
                       {service
                         ? `Selected: ${service.title}`
@@ -752,7 +755,13 @@ export default function InquiryPage() {
                   )}
 
                   {/* Dr. Gurudeva's greeting */}
-                  <div className="bg-gradient-to-r from-maroon-50 to-amber-50 border border-maroon-100 rounded-2xl p-5 mb-7 relative overflow-hidden">
+                  <div
+                    className="rounded-2xl p-5 mb-7 relative overflow-hidden"
+                    style={{
+                      background: "rgba(139,26,26,0.14)",
+                      border: "1px solid rgba(139,26,26,0.28)",
+                    }}
+                  >
                     <div className="absolute right-4 top-1/2 -translate-y-1/2 text-7xl opacity-5 pointer-events-none font-serif select-none">
                       🕉
                     </div>
@@ -761,16 +770,14 @@ export default function InquiryPage() {
                         <span className="text-white font-bold text-sm">G</span>
                       </div>
                       <div>
-                        <p className="font-semibold text-maroon-900 text-sm mb-1">
+                        <p className="font-semibold text-gold-300 text-sm mb-1">
                           Dr. Gurudeva Astrologer
                         </p>
-                        <div className="text-stone-700 text-sm leading-relaxed space-y-0.5">
-                          <p className="font-medium text-maroon-800">
-                            Namaste,
-                          </p>
+                        <div className="text-stone-300 text-sm leading-relaxed space-y-0.5">
+                          <p className="font-medium text-stone-200">Namaste,</p>
                           <p>Dr. Gurudeva Astrologer here.</p>
                           <p>Please send your birth details below:</p>
-                          <div className="mt-2 text-stone-500 text-xs space-y-0.5">
+                          <div className="mt-2 text-stone-400 text-xs space-y-0.5">
                             <p>Full Name :</p>
                             <p>Dob :</p>
                             <p>Time :</p>
@@ -806,7 +813,7 @@ export default function InquiryPage() {
                     </p>
 
                     {/* Buttons */}
-                    <div className="flex flex-col sm:flex-row items-center gap-3 pt-4 border-t border-stone-100">
+                    <div className="flex flex-col sm:flex-row items-center gap-3 pt-4 border-t border-white/10">
                       <button
                         type="button"
                         onClick={handleBack}
