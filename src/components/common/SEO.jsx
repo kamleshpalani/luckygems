@@ -1,8 +1,8 @@
-import React from 'react';
-import { Helmet } from 'react-helmet-async';
+import React from "react";
+import { Helmet } from "react-helmet-async";
 
-const SITE_NAME = 'Dr. Gurudeva – Vedic Astrologer | Luckygemfinder';
-const SITE_URL  = 'https://www.luckygemfinder.com';
+const SITE_NAME = "Gurudev Astrology – Vedic Astrologer | Dr. Gurudeva";
+const SITE_URL = "https://www.luckygemfinder.com";
 
 /**
  * SEO meta tag component.
@@ -12,7 +12,7 @@ export default function SEO({
   title,
   description,
   canonical,
-  ogImage = '/og-default.jpg',
+  ogImage = "/og-default.jpg",
   noIndex = false,
 }) {
   const fullTitle = title
@@ -28,18 +28,18 @@ export default function SEO({
       {noIndex && <meta name="robots" content="noindex, nofollow" />}
 
       {/* Open Graph */}
-      <meta property="og:title"       content={fullTitle} />
+      <meta property="og:title" content={fullTitle} />
       {description && <meta property="og:description" content={description} />}
-      <meta property="og:type"        content="website" />
-      <meta property="og:site_name"   content="Luckygemfinder" />
-      <meta property="og:image"       content={`${SITE_URL}${ogImage}`} />
+      <meta property="og:type" content="website" />
+      <meta property="og:site_name" content="Gurudev Astrology" />
+      <meta property="og:image" content={`${SITE_URL}${ogImage}`} />
       {canonicalUrl && <meta property="og:url" content={canonicalUrl} />}
 
       {/* Twitter */}
-      <meta name="twitter:card"        content="summary_large_image" />
-      <meta name="twitter:title"       content={fullTitle} />
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:title" content={fullTitle} />
       {description && <meta name="twitter:description" content={description} />}
-      <meta name="twitter:image"       content={`${SITE_URL}${ogImage}`} />
+      <meta name="twitter:image" content={`${SITE_URL}${ogImage}`} />
 
       {/* Canonical */}
       {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}

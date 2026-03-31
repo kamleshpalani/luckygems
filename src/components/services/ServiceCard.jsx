@@ -1,8 +1,8 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { ArrowRight } from 'lucide-react';
-import { motion } from 'framer-motion';
-import { ICON_MAP } from '../../utils/iconMap';
+import React from "react";
+import { Link } from "react-router-dom";
+import { ArrowRight } from "lucide-react";
+import { motion } from "framer-motion";
+import { ICON_MAP } from "../../utils/iconMap";
 
 export default function ServiceCard({ service, index = 0 }) {
   const Icon = ICON_MAP[service.icon] || ICON_MAP.Star;
@@ -25,9 +25,10 @@ export default function ServiceCard({ service, index = 0 }) {
           <span
             className="absolute top-4 right-4 text-[11px] font-bold px-2.5 py-1 rounded-full"
             style={{
-              background: 'linear-gradient(135deg, rgba(201,150,12,0.12), rgba(201,150,12,0.06))',
-              border: '1px solid rgba(201,150,12,0.3)',
-              color: '#9a6200',
+              background:
+                "linear-gradient(135deg, rgba(201,150,12,0.15), rgba(201,150,12,0.08))",
+              border: "1px solid rgba(201,150,12,0.35)",
+              color: "#EEC060",
             }}
           >
             {service.price}
@@ -39,12 +40,16 @@ export default function ServiceCard({ service, index = 0 }) {
           <div
             className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 transition-all duration-300 group-hover:scale-110"
             style={{
-              background: 'linear-gradient(135deg, rgba(201,150,12,0.12), rgba(139,26,26,0.07))',
-              border: '1px solid rgba(201,150,12,0.22)',
-              boxShadow: '0 2px 12px rgba(201,150,12,0.1)',
+              background:
+                "linear-gradient(135deg, rgba(201,150,12,0.12), rgba(139,26,26,0.07))",
+              border: "1px solid rgba(201,150,12,0.22)",
+              boxShadow: "0 2px 12px rgba(201,150,12,0.1)",
             }}
           >
-            <Icon size={21} className="text-maroon-700 group-hover:text-gold-600 transition-colors duration-200" />
+            <Icon
+              size={21}
+              className="text-maroon-700 group-hover:text-gold-600 transition-colors duration-200"
+            />
           </div>
 
           {/* Content */}

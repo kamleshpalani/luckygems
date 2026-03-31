@@ -10,11 +10,18 @@ export default function PricingCard({ plan, index = 0 }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.4, delay: index * 0.1 }}
-      className={`relative rounded-2xl p-7 flex flex-col h-full border-2 transition-shadow duration-200 ${
+      className={`relative rounded-2xl p-7 flex flex-col h-full border-2 transition-all duration-200 ${
         plan.popular
-          ? 'border-maroon-400 bg-maroon-50 shadow-maroon'
-          : 'border-stone-200 bg-white shadow-soft hover:shadow-medium'
+          ? 'border-gold-500/60 shadow-[0_0_30px_rgba(201,150,12,0.25)]'
+          : 'border-white/10 hover:border-gold-500/30 hover:shadow-[0_8px_32px_rgba(0,0,0,0.4)]'
       }`}
+      style={{
+        background: plan.popular
+          ? 'linear-gradient(135deg, rgba(201,150,12,0.14) 0%, rgba(139,26,26,0.12) 100%)'
+          : 'rgba(255,255,255,0.05)',
+        backdropFilter: 'blur(22px)',
+        WebkitBackdropFilter: 'blur(22px)',
+      }}
     >
       {plan.popular && (
         <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
