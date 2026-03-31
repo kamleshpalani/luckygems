@@ -36,10 +36,10 @@ export default function ContactForm({ compact = false }) {
     setLoading(true);
     try {
       // ── Supabase: save to contact_messages table ──
-      await supabase.from('contact_messages').insert({
-        name:    form.name,
-        email:   form.email,
-        phone:   form.phone,
+      await supabase.from("contact_messages").insert({
+        name: form.name,
+        email: form.email,
+        phone: form.phone,
         service: form.service,
         message: form.message,
       });
