@@ -1,92 +1,109 @@
-import React, { useState, useCallback, useRef, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useCallback, useRef, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 import {
-  Star, Briefcase, Heart, Activity, Gem, Layers, Calendar,
-  HelpCircle, Building2, CheckCircle2, ChevronRight, ChevronLeft,
-  Loader2, User, MapPin, Clock, CalendarDays, Navigation,
-  Sparkles, ArrowRight,
-} from 'lucide-react';
-import SEO from '../components/common/SEO';
-import Breadcrumbs from '../components/common/Breadcrumbs';
+  Star,
+  Briefcase,
+  Heart,
+  Activity,
+  Gem,
+  Layers,
+  Calendar,
+  HelpCircle,
+  Building2,
+  CheckCircle2,
+  ChevronRight,
+  ChevronLeft,
+  Loader2,
+  User,
+  MapPin,
+  Clock,
+  CalendarDays,
+  Navigation,
+  Sparkles,
+  ArrowRight,
+} from "lucide-react";
+import SEO from "../components/common/SEO";
+import Breadcrumbs from "../components/common/Breadcrumbs";
+import { supabase } from "../lib/supabase";
 
 /* ──────────────────────────────────────────────────────────
    DATA
 ────────────────────────────────────────────────────────── */
 const INQUIRY_SERVICES = [
   {
-    slug:     'horoscope-reading',
-    title:    'Horoscope Reading',
-    tagline:  'Lifetime predictions based on Vedic astrology',
-    icon:     Star,
-    price:    '$21',
-    popular:  true,
-    color:    'from-maroon-700 to-maroon-500',
-    badge:    'Most Popular',
+    slug: "horoscope-reading",
+    title: "Horoscope Reading",
+    tagline: "Lifetime predictions based on Vedic astrology",
+    icon: Star,
+    price: "$21",
+    popular: true,
+    color: "from-maroon-700 to-maroon-500",
+    badge: "Most Popular",
   },
   {
-    slug:     'career-astrology',
-    title:    'Career Analysis',
-    tagline:  'Find the career path your horoscope supports',
-    icon:     Briefcase,
-    price:    '$21',
-    color:    'from-blue-700 to-blue-500',
+    slug: "career-astrology",
+    title: "Career Analysis",
+    tagline: "Find the career path your horoscope supports",
+    icon: Briefcase,
+    price: "$21",
+    color: "from-blue-700 to-blue-500",
   },
   {
-    slug:     'marriage-compatibility',
-    title:    'Kundli Matching',
-    tagline:  '36-point horoscope compatibility analysis',
-    icon:     Heart,
-    price:    '$21',
-    color:    'from-rose-700 to-rose-500',
+    slug: "marriage-compatibility",
+    title: "Kundli Matching",
+    tagline: "36-point horoscope compatibility analysis",
+    icon: Heart,
+    price: "$21",
+    color: "from-rose-700 to-rose-500",
   },
   {
-    slug:     'health-astrology',
-    title:    'Health Astrology',
-    tagline:  'Planetary influences on your wellbeing',
-    icon:     Activity,
-    price:    '$21',
-    color:    'from-emerald-700 to-emerald-500',
+    slug: "health-astrology",
+    title: "Health Astrology",
+    tagline: "Planetary influences on your wellbeing",
+    icon: Activity,
+    price: "$21",
+    color: "from-emerald-700 to-emerald-500",
   },
   {
-    slug:     'lucky-gem-report',
-    title:    'Lucky Gem Report',
-    tagline:  'Your ideal gemstone from your birth chart',
-    icon:     Gem,
-    price:    '$21',
-    color:    'from-violet-700 to-violet-500',
+    slug: "lucky-gem-report",
+    title: "Lucky Gem Report",
+    tagline: "Your ideal gemstone from your birth chart",
+    icon: Gem,
+    price: "$21",
+    color: "from-violet-700 to-violet-500",
   },
   {
-    slug:     'doshas-yogas',
-    title:    'Doshas & Yogas',
-    tagline:  'Identify and remedy planetary afflictions',
-    icon:     Layers,
-    price:    '$21',
-    color:    'from-amber-700 to-amber-500',
+    slug: "doshas-yogas",
+    title: "Doshas & Yogas",
+    tagline: "Identify and remedy planetary afflictions",
+    icon: Layers,
+    price: "$21",
+    color: "from-amber-700 to-amber-500",
   },
   {
-    slug:     'muhurtham',
-    title:    'Muhurtham / Timing',
-    tagline:  "Auspicious timing for life's biggest moments",
-    icon:     Calendar,
-    price:    '$21',
-    color:    'from-teal-700 to-teal-500',
+    slug: "muhurtham",
+    title: "Muhurtham / Timing",
+    tagline: "Auspicious timing for life's biggest moments",
+    icon: Calendar,
+    price: "$21",
+    color: "from-teal-700 to-teal-500",
   },
   {
-    slug:     'business-astrology',
-    title:    'Business Astrology',
-    tagline:  'Planetary guidance for your enterprise',
-    icon:     Building2,
-    price:    '$21',
-    color:    'from-indigo-700 to-indigo-500',
+    slug: "business-astrology",
+    title: "Business Astrology",
+    tagline: "Planetary guidance for your enterprise",
+    icon: Building2,
+    price: "$21",
+    color: "from-indigo-700 to-indigo-500",
   },
   {
-    slug:     'ask-a-question',
-    title:    'Ask a Question',
-    tagline:  'One specific question answered in depth',
-    icon:     HelpCircle,
-    price:    '$11',
-    color:    'from-stone-700 to-stone-500',
+    slug: "ask-a-question",
+    title: "Ask a Question",
+    tagline: "One specific question answered in depth",
+    icon: HelpCircle,
+    price: "$11",
+    color: "from-stone-700 to-stone-500",
   },
 ];
 
@@ -94,48 +111,87 @@ const INQUIRY_SERVICES = [
    VALIDATION
 ────────────────────────────────────────────────────────── */
 const FIELDS = [
-  { id: 'fullName',        label: 'Full Name',        icon: User,        type: 'text',  placeholder: 'e.g. Priya Sharma',           required: true },
-  { id: 'dob',             label: 'Date of Birth',     icon: CalendarDays,type: 'date',  placeholder: '',                            required: true },
-  { id: 'timeOfBirth',     label: 'Time of Birth',     icon: Clock,       type: 'time',  placeholder: '',                            required: true },
-  { id: 'placeOfBirth',    label: 'Place of Birth',    icon: MapPin,      type: 'text',  placeholder: 'e.g. Chennai, Tamil Nadu',    required: true },
-  { id: 'presentLocation', label: 'Present Location',  icon: Navigation,  type: 'text',  placeholder: 'e.g. Edison, NJ, USA',        required: true },
+  {
+    id: "fullName",
+    label: "Full Name",
+    icon: User,
+    type: "text",
+    placeholder: "e.g. Priya Sharma",
+    required: true,
+  },
+  {
+    id: "dob",
+    label: "Date of Birth",
+    icon: CalendarDays,
+    type: "date",
+    placeholder: "",
+    required: true,
+  },
+  {
+    id: "timeOfBirth",
+    label: "Time of Birth",
+    icon: Clock,
+    type: "time",
+    placeholder: "",
+    required: true,
+  },
+  {
+    id: "placeOfBirth",
+    label: "Place of Birth",
+    icon: MapPin,
+    type: "text",
+    placeholder: "e.g. Chennai, Tamil Nadu",
+    required: true,
+  },
+  {
+    id: "presentLocation",
+    label: "Present Location",
+    icon: Navigation,
+    type: "text",
+    placeholder: "e.g. Edison, NJ, USA",
+    required: true,
+  },
 ];
 
-const INITIAL_VALUES = Object.fromEntries(FIELDS.map((f) => [f.id, '']));
-const INITIAL_ERRORS = Object.fromEntries(FIELDS.map((f) => [f.id, '']));
+const INITIAL_VALUES = Object.fromEntries(FIELDS.map((f) => [f.id, ""]));
+const INITIAL_ERRORS = Object.fromEntries(FIELDS.map((f) => [f.id, ""]));
 
 function validate(values) {
   const errors = { ...INITIAL_ERRORS };
   let valid = true;
 
   if (!values.fullName.trim()) {
-    errors.fullName = 'Full name is required.';
+    errors.fullName = "Full name is required.";
     valid = false;
   } else if (values.fullName.trim().length < 2) {
-    errors.fullName = 'Please enter your full name.';
+    errors.fullName = "Please enter your full name.";
     valid = false;
   }
 
   if (!values.dob) {
-    errors.dob = 'Date of birth is required.';
+    errors.dob = "Date of birth is required.";
     valid = false;
   } else {
     const d = new Date(values.dob);
-    if (d > new Date()) { errors.dob = 'Date cannot be in the future.'; valid = false; }
+    if (d > new Date()) {
+      errors.dob = "Date cannot be in the future.";
+      valid = false;
+    }
   }
 
   if (!values.timeOfBirth) {
-    errors.timeOfBirth = 'Birth time is required. Provide best estimate if unknown.';
+    errors.timeOfBirth =
+      "Birth time is required. Provide best estimate if unknown.";
     valid = false;
   }
 
   if (!values.placeOfBirth.trim()) {
-    errors.placeOfBirth = 'Place of birth is required.';
+    errors.placeOfBirth = "Place of birth is required.";
     valid = false;
   }
 
   if (!values.presentLocation.trim()) {
-    errors.presentLocation = 'Present location is required.';
+    errors.presentLocation = "Present location is required.";
     valid = false;
   }
 
@@ -145,34 +201,38 @@ function validate(values) {
 /* ──────────────────────────────────────────────────────────
    STEP INDICATOR
 ────────────────────────────────────────────────────────── */
-const STEPS = ['Select Service', 'Your Birth Details', 'Confirmation'];
+const STEPS = ["Select Service", "Your Birth Details", "Confirmation"];
 
 function StepIndicator({ current }) {
   return (
     <div className="flex items-center justify-center gap-0 select-none">
       {STEPS.map((label, i) => {
-        const state = i < current ? 'done' : i === current ? 'active' : 'idle';
+        const state = i < current ? "done" : i === current ? "active" : "idle";
         return (
           <React.Fragment key={label}>
             <div className="flex flex-col items-center gap-1.5">
               <motion.div
                 animate={{
-                  scale: state === 'active' ? 1.1 : 1,
+                  scale: state === "active" ? 1.1 : 1,
                 }}
-                transition={{ type: 'spring', stiffness: 300, damping: 22 }}
+                transition={{ type: "spring", stiffness: 300, damping: 22 }}
                 className={`w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold border-2 transition-colors duration-300 ${
-                  state === 'done'
-                    ? 'bg-maroon-600 border-maroon-600 text-white'
-                    : state === 'active'
-                    ? 'bg-white border-maroon-600 text-maroon-700 shadow-md shadow-maroon-200'
-                    : 'bg-white border-stone-300 text-stone-400'
+                  state === "done"
+                    ? "bg-maroon-600 border-maroon-600 text-white"
+                    : state === "active"
+                      ? "bg-white border-maroon-600 text-maroon-700 shadow-md shadow-maroon-200"
+                      : "bg-white border-stone-300 text-stone-400"
                 }`}
               >
-                {state === 'done' ? <CheckCircle2 size={17} /> : i + 1}
+                {state === "done" ? <CheckCircle2 size={17} /> : i + 1}
               </motion.div>
               <span
                 className={`text-[11px] font-medium whitespace-nowrap transition-colors duration-300 ${
-                  state === 'active' ? 'text-maroon-700' : state === 'done' ? 'text-maroon-500' : 'text-stone-400'
+                  state === "active"
+                    ? "text-maroon-700"
+                    : state === "done"
+                      ? "text-maroon-500"
+                      : "text-stone-400"
                 }`}
               >
                 {label}
@@ -181,7 +241,7 @@ function StepIndicator({ current }) {
             {i < STEPS.length - 1 && (
               <div
                 className={`h-0.5 w-10 sm:w-16 mb-5 mx-1 rounded-full transition-colors duration-500 ${
-                  i < current ? 'bg-maroon-500' : 'bg-stone-200'
+                  i < current ? "bg-maroon-500" : "bg-stone-200"
                 }`}
               />
             )}
@@ -207,8 +267,8 @@ function ServiceCard({ service, selected, onSelect }) {
       whileTap={{ scale: 0.97 }}
       className={`relative text-left w-full rounded-2xl border-2 p-5 transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-maroon-400 ${
         active
-          ? 'border-maroon-500 bg-maroon-50 shadow-lg shadow-maroon-100'
-          : 'border-stone-200 bg-white hover:border-maroon-300 hover:shadow-md'
+          ? "border-maroon-500 bg-maroon-50 shadow-lg shadow-maroon-100"
+          : "border-stone-200 bg-white hover:border-maroon-300 hover:shadow-md"
       }`}
     >
       {/* Popular badge */}
@@ -242,15 +302,21 @@ function ServiceCard({ service, selected, onSelect }) {
       </div>
 
       {/* Text */}
-      <p className={`font-semibold text-sm leading-snug mb-1 ${active ? 'text-maroon-800' : 'text-stone-900'}`}>
+      <p
+        className={`font-semibold text-sm leading-snug mb-1 ${active ? "text-maroon-800" : "text-stone-900"}`}
+      >
         {service.title}
       </p>
-      <p className="text-stone-500 text-xs leading-relaxed line-clamp-2">{service.tagline}</p>
+      <p className="text-stone-500 text-xs leading-relaxed line-clamp-2">
+        {service.tagline}
+      </p>
 
       {/* Price */}
-      <div className={`mt-3 inline-flex items-center gap-1 text-xs font-bold px-2.5 py-1 rounded-full ${
-        active ? 'bg-maroon-600 text-white' : 'bg-stone-100 text-stone-600'
-      }`}>
+      <div
+        className={`mt-3 inline-flex items-center gap-1 text-xs font-bold px-2.5 py-1 rounded-full ${
+          active ? "bg-maroon-600 text-white" : "bg-stone-100 text-stone-600"
+        }`}
+      >
         {service.price}
       </div>
     </motion.button>
@@ -266,7 +332,10 @@ function FormField({ field, value, error, onChange, touched }) {
 
   return (
     <div className="flex flex-col gap-1">
-      <label htmlFor={field.id} className="text-sm font-semibold text-stone-700 flex items-center gap-1.5">
+      <label
+        htmlFor={field.id}
+        className="text-sm font-semibold text-stone-700 flex items-center gap-1.5"
+      >
         <Icon size={13} className="text-maroon-500" />
         {field.label}
         <span className="text-maroon-500">*</span>
@@ -280,8 +349,8 @@ function FormField({ field, value, error, onChange, touched }) {
           placeholder={field.placeholder}
           className={`w-full rounded-xl border px-4 py-3 text-sm bg-white/80 backdrop-blur-sm transition-all duration-150 focus:outline-none focus:ring-2 ${
             hasError
-              ? 'border-red-400 focus:ring-red-200 focus:border-red-400'
-              : 'border-stone-300 focus:ring-maroon-200 focus:border-maroon-400'
+              ? "border-red-400 focus:ring-red-200 focus:border-red-400"
+              : "border-stone-300 focus:ring-maroon-200 focus:border-maroon-400"
           } placeholder:text-stone-400 text-stone-800`}
         />
       </div>
@@ -289,7 +358,7 @@ function FormField({ field, value, error, onChange, touched }) {
         {hasError && (
           <motion.p
             initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
+            animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             className="text-red-600 text-xs mt-0.5"
           >
@@ -309,12 +378,18 @@ function ServiceSummaryBar({ service, onChange }) {
   return (
     <div className="flex items-center justify-between gap-3 bg-maroon-50 border border-maroon-200 rounded-2xl px-5 py-3.5 mb-6">
       <div className="flex items-center gap-3">
-        <div className={`w-9 h-9 rounded-xl bg-gradient-to-br ${service.color} flex items-center justify-center flex-shrink-0`}>
+        <div
+          className={`w-9 h-9 rounded-xl bg-gradient-to-br ${service.color} flex items-center justify-center flex-shrink-0`}
+        >
           <Icon size={16} className="text-white" />
         </div>
         <div>
-          <p className="font-semibold text-maroon-900 text-sm leading-snug">{service.title}</p>
-          <p className="text-maroon-600 text-xs">{service.price} · Email report within 24–48 hrs</p>
+          <p className="font-semibold text-maroon-900 text-sm leading-snug">
+            {service.title}
+          </p>
+          <p className="text-maroon-600 text-xs">
+            {service.price} · Email report within 24–48 hrs
+          </p>
         </div>
       </div>
       <button
@@ -336,7 +411,12 @@ function SuccessScreen({ service, values }) {
     <motion.div
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.5, type: 'spring', stiffness: 200, damping: 22 }}
+      transition={{
+        duration: 0.5,
+        type: "spring",
+        stiffness: 200,
+        damping: 22,
+      }}
       className="text-center py-8 px-4"
     >
       {/* Animated checkmark */}
@@ -344,7 +424,7 @@ function SuccessScreen({ service, values }) {
         <motion.div
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
-          transition={{ delay: 0.1, type: 'spring', stiffness: 200 }}
+          transition={{ delay: 0.1, type: "spring", stiffness: 200 }}
           className="w-24 h-24 rounded-full bg-gradient-to-br from-maroon-600 to-maroon-400 flex items-center justify-center shadow-xl shadow-maroon-200"
         >
           <CheckCircle2 size={44} className="text-white" strokeWidth={2} />
@@ -353,30 +433,44 @@ function SuccessScreen({ service, values }) {
           <motion.div
             key={i}
             initial={{ opacity: 0, scale: 0 }}
-            animate={{ opacity: [0, 1, 0], scale: [0, 1, 0], x: Math.cos((i / 6) * Math.PI * 2) * 44, y: Math.sin((i / 6) * Math.PI * 2) * 44 }}
+            animate={{
+              opacity: [0, 1, 0],
+              scale: [0, 1, 0],
+              x: Math.cos((i / 6) * Math.PI * 2) * 44,
+              y: Math.sin((i / 6) * Math.PI * 2) * 44,
+            }}
             transition={{ delay: 0.3 + i * 0.06, duration: 0.8 }}
             className="absolute top-1/2 left-1/2 w-2 h-2 rounded-full bg-gold-400"
-            style={{ transform: 'translate(-50%, -50%)' }}
+            style={{ transform: "translate(-50%, -50%)" }}
           />
         ))}
       </div>
 
-      <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }}>
-        <h2 className="font-serif text-2xl font-bold text-stone-900 mb-2">Request Submitted! 🙏</h2>
+      <motion.div
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.35 }}
+      >
+        <h2 className="font-serif text-2xl font-bold text-stone-900 mb-2">
+          Request Submitted! 🙏
+        </h2>
         <p className="text-stone-500 text-sm max-w-md mx-auto leading-relaxed mb-6">
-          Namaste, <strong className="text-stone-700">{values.fullName}</strong>! Dr. Gurudeva has received your request for{' '}
-          <strong className="text-maroon-700">{service.title}</strong>. You'll receive a detailed report via email within <strong>24–48 hours</strong>.
+          Namaste, <strong className="text-stone-700">{values.fullName}</strong>
+          ! Dr. Gurudeva has received your request for{" "}
+          <strong className="text-maroon-700">{service.title}</strong>. You'll
+          receive a detailed report via email within{" "}
+          <strong>24–48 hours</strong>.
         </p>
 
         {/* Summary card */}
         <div className="bg-stone-50 border border-stone-200 rounded-2xl p-5 text-left max-w-sm mx-auto mb-8 space-y-2">
           {[
-            ['Service',        service.title],
-            ['Name',           values.fullName],
-            ['Date of Birth',  values.dob],
-            ['Time of Birth',  values.timeOfBirth],
-            ['Place of Birth', values.placeOfBirth],
-            ['Present',        values.presentLocation],
+            ["Service", service.title],
+            ["Name", values.fullName],
+            ["Date of Birth", values.dob],
+            ["Time of Birth", values.timeOfBirth],
+            ["Place of Birth", values.placeOfBirth],
+            ["Present", values.presentLocation],
           ].map(([label, val]) => (
             <div key={label} className="flex items-start gap-2 text-sm">
               <span className="text-stone-400 w-28 flex-shrink-0">{label}</span>
@@ -404,30 +498,35 @@ function SuccessScreen({ service, values }) {
 const SLIDE = {
   enter: (dir) => ({ opacity: 0, x: dir > 0 ? 40 : -40 }),
   center: { opacity: 1, x: 0 },
-  exit:  (dir) => ({ opacity: 0, x: dir > 0 ? -40 : 40 }),
+  exit: (dir) => ({ opacity: 0, x: dir > 0 ? -40 : 40 }),
 };
 
 export default function InquiryPage() {
-  const [step,     setStep]     = useState(0);   // 0=select, 1=form, 2=success
-  const [service,  setService]  = useState(null);
-  const [values,   setValues]   = useState(INITIAL_VALUES);
-  const [errors,   setErrors]   = useState(INITIAL_ERRORS);
-  const [touched,  setTouched]  = useState(Object.fromEntries(FIELDS.map((f) => [f.id, false])));
-  const [loading,  setLoading]  = useState(false);
-  const [dir,      setDir]      = useState(1);   // slide direction
+  const [step, setStep] = useState(0); // 0=select, 1=form, 2=success
+  const [service, setService] = useState(null);
+  const [values, setValues] = useState(INITIAL_VALUES);
+  const [errors, setErrors] = useState(INITIAL_ERRORS);
+  const [touched, setTouched] = useState(
+    Object.fromEntries(FIELDS.map((f) => [f.id, false])),
+  );
+  const [loading, setLoading] = useState(false);
+  const [dir, setDir] = useState(1); // slide direction
   const topRef = useRef(null);
 
-  const crumbs = [{ label: 'Request a Consultation', path: '/inquiry' }];
+  const crumbs = [{ label: "Request a Consultation", path: "/inquiry" }];
 
   // Scroll top on step change
   useEffect(() => {
-    topRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    topRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   }, [step]);
 
-  const goTo = useCallback((next) => {
-    setDir(next > step ? 1 : -1);
-    setStep(next);
-  }, [step]);
+  const goTo = useCallback(
+    (next) => {
+      setDir(next > step ? 1 : -1);
+      setStep(next);
+    },
+    [step],
+  );
 
   const handleSelectService = useCallback((svc) => {
     setService(svc);
@@ -442,40 +541,56 @@ export default function InquiryPage() {
     goTo(0);
   }, [goTo]);
 
-  const handleChange = useCallback((id, val) => {
-    setValues((prev) => ({ ...prev, [id]: val }));
-    setTouched((prev) => ({ ...prev, [id]: true }));
-    // Live-validate touched field
-    const { errors: e } = validate({ ...values, [id]: val });
-    setErrors((prev) => ({ ...prev, [id]: e[id] }));
-  }, [values]);
+  const handleChange = useCallback(
+    (id, val) => {
+      setValues((prev) => ({ ...prev, [id]: val }));
+      setTouched((prev) => ({ ...prev, [id]: true }));
+      // Live-validate touched field
+      const { errors: e } = validate({ ...values, [id]: val });
+      setErrors((prev) => ({ ...prev, [id]: e[id] }));
+    },
+    [values],
+  );
 
-  const handleBlur = useCallback((id) => {
-    setTouched((prev) => ({ ...prev, [id]: true }));
-    const { errors: e } = validate(values);
-    setErrors((prev) => ({ ...prev, [id]: e[id] }));
-  }, [values]);
+  const handleBlur = useCallback(
+    (id) => {
+      setTouched((prev) => ({ ...prev, [id]: true }));
+      const { errors: e } = validate(values);
+      setErrors((prev) => ({ ...prev, [id]: e[id] }));
+    },
+    [values],
+  );
 
-  const handleSubmit = useCallback(async (e) => {
-    e.preventDefault();
-    // Touch all fields
-    setTouched(Object.fromEntries(FIELDS.map((f) => [f.id, true])));
-    const { errors: e2, valid } = validate(values);
-    setErrors(e2);
-    if (!valid) return;
+  const handleSubmit = useCallback(
+    async (e) => {
+      e.preventDefault();
+      // Touch all fields
+      setTouched(Object.fromEntries(FIELDS.map((f) => [f.id, true])));
+      const { errors: e2, valid } = validate(values);
+      setErrors(e2);
+      if (!valid) return;
 
-    setLoading(true);
-    try {
-      // ── API integration point ──
-      // await fetch('/api/inquiry', { method: 'POST', body: JSON.stringify({ service: service.slug, ...values }) });
-      await new Promise((r) => setTimeout(r, 1600)); // simulate network
-      goTo(2);
-    } catch (_) {
-      alert('Something went wrong. Please try again or call us directly.');
-    } finally {
-      setLoading(false);
-    }
-  }, [values, service, goTo]);
+      setLoading(true);
+      try {
+        const { error } = await supabase.from("inquiries").insert({
+          service: service.slug,
+          service_title: service.title,
+          full_name: values.fullName,
+          dob: values.dob,
+          time_of_birth: values.timeOfBirth,
+          place_of_birth: values.placeOfBirth,
+          present_location: values.presentLocation,
+        });
+        if (error) throw error;
+        goTo(2);
+      } catch (_) {
+        alert("Something went wrong. Please try again or call us directly.");
+      } finally {
+        setLoading(false);
+      }
+    },
+    [values, service, goTo],
+  );
 
   return (
     <>
@@ -488,17 +603,20 @@ export default function InquiryPage() {
       {/* ── Decorative hero strip ── */}
       <section className="bg-gradient-to-br from-maroon-900 via-maroon-800 to-maroon-700 text-white py-10 md:py-16 relative overflow-hidden">
         {/* Background decoration */}
-        <div className="absolute inset-0 opacity-5 pointer-events-none" aria-hidden="true">
+        <div
+          className="absolute inset-0 opacity-5 pointer-events-none"
+          aria-hidden="true"
+        >
           {[...Array(4)].map((_, i) => (
             <div
               key={i}
               className="absolute rounded-full border border-white"
               style={{
-                width:  `${220 + i * 120}px`,
+                width: `${220 + i * 120}px`,
                 height: `${220 + i * 120}px`,
-                top:    '50%',
-                left:   '10%',
-                transform: 'translate(-50%,-50%)',
+                top: "50%",
+                left: "10%",
+                transform: "translate(-50%,-50%)",
               }}
             />
           ))}
@@ -510,13 +628,16 @@ export default function InquiryPage() {
             <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
               <Sparkles size={18} className="text-gold-300" />
             </div>
-            <span className="text-gold-300 text-sm font-medium">Consultation Request</span>
+            <span className="text-gold-300 text-sm font-medium">
+              Consultation Request
+            </span>
           </div>
           <h1 className="font-serif text-3xl sm:text-4xl font-bold text-white mb-2 leading-tight">
             Book Your Vedic Consultation
           </h1>
           <p className="text-maroon-200 text-base max-w-lg">
-            Select a service and share your birth details — Dr. Gurudeva will personally analyze your chart and reply within 24–48 hours.
+            Select a service and share your birth details — Dr. Gurudeva will
+            personally analyze your chart and reply within 24–48 hours.
           </p>
         </div>
       </section>
@@ -527,7 +648,6 @@ export default function InquiryPage() {
         className="min-h-screen bg-gradient-to-b from-stone-100 to-stone-50 py-8 px-4 sm:px-6"
       >
         <div className="max-w-3xl mx-auto">
-
           {/* Step indicator */}
           <div className="mb-8">
             <StepIndicator current={step} />
@@ -535,7 +655,6 @@ export default function InquiryPage() {
 
           {/* Glass card */}
           <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-xl border border-stone-200/60 overflow-hidden">
-
             <AnimatePresence mode="wait" custom={dir}>
               {/* ── STEP 0: Service Selection ── */}
               {step === 0 && (
@@ -546,7 +665,7 @@ export default function InquiryPage() {
                   initial="enter"
                   animate="center"
                   exit="exit"
-                  transition={{ duration: 0.3, ease: 'easeInOut' }}
+                  transition={{ duration: 0.3, ease: "easeInOut" }}
                   className="p-6 sm:p-8"
                 >
                   <div className="mb-6">
@@ -554,7 +673,8 @@ export default function InquiryPage() {
                       Choose a Service
                     </h2>
                     <p className="text-stone-500 text-sm">
-                      Select the consultation that best fits your need. You can change this later.
+                      Select the consultation that best fits your need. You can
+                      change this later.
                     </p>
                   </div>
 
@@ -578,7 +698,9 @@ export default function InquiryPage() {
                   {/* CTA */}
                   <div className="flex items-center justify-between pt-4 border-t border-stone-100">
                     <p className="text-stone-400 text-xs">
-                      {service ? `Selected: ${service.title}` : 'No service selected yet'}
+                      {service
+                        ? `Selected: ${service.title}`
+                        : "No service selected yet"}
                     </p>
                     <motion.button
                       type="button"
@@ -604,12 +726,15 @@ export default function InquiryPage() {
                   initial="enter"
                   animate="center"
                   exit="exit"
-                  transition={{ duration: 0.3, ease: 'easeInOut' }}
+                  transition={{ duration: 0.3, ease: "easeInOut" }}
                   className="p-6 sm:p-8"
                 >
                   {/* Service summary */}
                   {service && (
-                    <ServiceSummaryBar service={service} onChange={handleBack} />
+                    <ServiceSummaryBar
+                      service={service}
+                      onChange={handleBack}
+                    />
                   )}
 
                   {/* Dr. Gurudeva's greeting */}
@@ -626,7 +751,9 @@ export default function InquiryPage() {
                           Dr. Gurudeva Astrologer
                         </p>
                         <div className="text-stone-700 text-sm leading-relaxed space-y-0.5">
-                          <p className="font-medium text-maroon-800">Namaste,</p>
+                          <p className="font-medium text-maroon-800">
+                            Namaste,
+                          </p>
                           <p>Dr. Gurudeva Astrologer here.</p>
                           <p>Please send your birth details below:</p>
                           <div className="mt-2 text-stone-500 text-xs space-y-0.5">
@@ -660,7 +787,8 @@ export default function InquiryPage() {
                     {/* Privacy note */}
                     <p className="text-stone-400 text-xs mb-6 flex items-start gap-1.5">
                       <span className="text-maroon-400 mt-0.5">🔒</span>
-                      Your birth details are used solely for your astrological reading and are never shared with third parties.
+                      Your birth details are used solely for your astrological
+                      reading and are never shared with third parties.
                     </p>
 
                     {/* Buttons */}
@@ -707,7 +835,7 @@ export default function InquiryPage() {
                   initial="enter"
                   animate="center"
                   exit="exit"
-                  transition={{ duration: 0.3, ease: 'easeInOut' }}
+                  transition={{ duration: 0.3, ease: "easeInOut" }}
                   className="p-6 sm:p-10"
                 >
                   <SuccessScreen service={service} values={values} />
@@ -724,7 +852,12 @@ export default function InquiryPage() {
               transition={{ delay: 0.4 }}
               className="flex flex-wrap items-center justify-center gap-6 mt-8 text-stone-400 text-xs"
             >
-              {['25+ Years Experience', 'Clients in 30+ Countries', 'Reply Within 24–48 Hours', 'Secure & Confidential'].map((t) => (
+              {[
+                "25+ Years Experience",
+                "Clients in 30+ Countries",
+                "Reply Within 24–48 Hours",
+                "Secure & Confidential",
+              ].map((t) => (
                 <div key={t} className="flex items-center gap-1.5">
                   <CheckCircle2 size={12} className="text-maroon-400" />
                   {t}

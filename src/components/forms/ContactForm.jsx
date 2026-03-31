@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Send, CheckCircle } from 'lucide-react';
+import emailjs from '@emailjs/browser';
 
 const SERVICES_LIST = [
   'Horoscope Reading',
