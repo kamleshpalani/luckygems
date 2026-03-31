@@ -3,7 +3,7 @@
 --  Run this file in: Supabase → SQL Editor → Run
 --
 --  This creates ALL tables in the correct order.
---  Safe to run on a fresh database.
+--  Safe to re-run on a database that already has some tables.
 -- ═════════════════════════════════════════════════════════
 
 
@@ -25,12 +25,15 @@ CREATE TABLE IF NOT EXISTS inquiries (
 
 ALTER TABLE inquiries ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "inquiries_public_insert" ON inquiries;
 CREATE POLICY "inquiries_public_insert"
   ON inquiries FOR INSERT TO anon WITH CHECK (true);
 
+DROP POLICY IF EXISTS "inquiries_auth_read" ON inquiries;
 CREATE POLICY "inquiries_auth_read"
   ON inquiries FOR SELECT TO authenticated USING (true);
 
+DROP POLICY IF EXISTS "inquiries_auth_update" ON inquiries;
 CREATE POLICY "inquiries_auth_update"
   ON inquiries FOR UPDATE TO authenticated USING (true);
 
@@ -51,12 +54,15 @@ CREATE TABLE IF NOT EXISTS contact_messages (
 
 ALTER TABLE contact_messages ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "contact_public_insert" ON contact_messages;
 CREATE POLICY "contact_public_insert"
   ON contact_messages FOR INSERT TO anon WITH CHECK (true);
 
+DROP POLICY IF EXISTS "contact_auth_read" ON contact_messages;
 CREATE POLICY "contact_auth_read"
   ON contact_messages FOR SELECT TO authenticated USING (true);
 
+DROP POLICY IF EXISTS "contact_auth_update" ON contact_messages;
 CREATE POLICY "contact_auth_update"
   ON contact_messages FOR UPDATE TO authenticated USING (true);
 
@@ -80,7 +86,9 @@ CREATE TABLE IF NOT EXISTS services (
 );
 
 ALTER TABLE services ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "services_public_read" ON services;
 CREATE POLICY "services_public_read"   ON services FOR SELECT TO anon, authenticated USING (active = TRUE);
+DROP POLICY IF EXISTS "services_auth_write" ON services;
 CREATE POLICY "services_auth_write"    ON services FOR ALL    TO authenticated USING (true);
 
 INSERT INTO services (slug, title, tagline, icon, category, price, popular, sort_order) VALUES
@@ -95,7 +103,8 @@ INSERT INTO services (slug, title, tagline, icon, category, price, popular, sort
   ('travel-abroad-astrology', 'Travel & Abroad',             'Is foreign settlement or travel favored in your chart?',      'Plane',      'Life Areas',     '$21',  FALSE, 9),
   ('numerology',              'Numerology',                  'The power of numbers in your birth date and name',            'Hash',       'Speciality',     '$21',  FALSE, 10),
   ('ask-a-question',          'Ask a Question',              'One focused question answered in depth',                      'HelpCircle', 'Speciality',     '$11',  FALSE, 11),
-  ('birth-time-correction',   'Birth Time Correction',       'Rectify your birth time using life events',                   'Clock',      'Speciality',     '$21',  FALSE, 12);
+  ('birth-time-correction',   'Birth Time Correction',       'Rectify your birth time using life events',                   'Clock',      'Speciality',     '$21',  FALSE, 12)
+ON CONFLICT (slug) DO NOTHING;
 
 
 -- ─────────────────────────────────────────────────────────
@@ -124,7 +133,9 @@ CREATE TABLE IF NOT EXISTS gemstones (
 );
 
 ALTER TABLE gemstones ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "gemstones_public_read" ON gemstones;
 CREATE POLICY "gemstones_public_read"  ON gemstones FOR SELECT TO anon, authenticated USING (active = TRUE);
+DROP POLICY IF EXISTS "gemstones_auth_write" ON gemstones;
 CREATE POLICY "gemstones_auth_write"   ON gemstones FOR ALL    TO authenticated USING (true);
 
 INSERT INTO gemstones (slug, name, sanskrit_name, planet, color_hex, color_name, short_desc, benefits, caution, min_weight, metal, finger, day_to_wear, mantra, price_range, sort_order) VALUES
@@ -136,7 +147,8 @@ INSERT INTO gemstones (slug, name, sanskrit_name, planet, color_hex, color_name,
   ('diamond',        'Diamond',        'Heera',    'Venus',   '#B9F2FF', 'White / Clear', 'Brings luxury, love, artistic talent, marital happiness and beauty.',  ARRAY['Enhances beauty and artistic talent','Supports marriage and love','Brings luxury and comfort','Beneficial during Venus Dasha'],                      'Never wear with Ruby without chart analysis.',                      '0.5–1 Carat','Platinum or gold',  'Middle or ring finger',     'Friday, morning',    'Om Shukraya Namah',  '$$$$',   6),
   ('blue-sapphire',  'Blue Sapphire',  'Neelam',   'Saturn',  '#1B4F72', 'Blue',          'One of the most powerful stones for discipline, career and karma.',    ARRAY['Rapid results for career and finances','Provides discipline and focus','Removes delays and obstacles','Powerful during Sade Sati if prescribed'], 'Test for 3 days before committing — most powerful and unpredictable.','3–5 Ratti', 'Gold or silver',    'Middle finger, right hand', 'Saturday, morning',  'Om Shanaye Namah',   '$$$–$$$$',7),
   ('hessonite',      'Hessonite',      'Gomed',    'Rahu',    '#CC8800', 'Honey / Brown', 'Removes confusion, fear, addictions and Rahu Mahadasha effects.',      ARRAY['Removes Rahu Dasha malefic effects','Reduces confusion and anxiety','Helps with career obstacles','Beneficial for unconventional careers'],          'Only wear after thorough chart analysis — Rahu is unpredictable.',  '5–8 Ratti',  'Panchdhatu / silver','Middle or ring finger',     'Saturday, evening',  'Om Rahave Namah',    '$–$$',   8),
-  ('cats-eye',       'Cat''s Eye',     'Lehsunia', 'Ketu',    '#A8B400', 'Yellowish-Green','Provides spiritual insight, protection and removes Ketu Dasha effects.',ARRAY['Protects from evil eye','Provides spiritual insight','Removes Ketu Dasha effects','Beneficial for moksha and liberation'],                        'Sudden effects possible — careful chart analysis required first.',  '3–5 Ratti',  'Panchdhatu',        'Middle or ring finger',     'Thursday, evening',  'Om Ketave Namah',    '$–$$',   9);
+  ('cats-eye',       'Cat''s Eye',     'Lehsunia', 'Ketu',    '#A8B400', 'Yellowish-Green','Provides spiritual insight, protection and removes Ketu Dasha effects.',ARRAY['Protects from evil eye','Provides spiritual insight','Removes Ketu Dasha effects','Beneficial for moksha and liberation'],                        'Sudden effects possible — careful chart analysis required first.',  '3–5 Ratti',  'Panchdhatu',        'Middle or ring finger',     'Thursday, evening',  'Om Ketave Namah',    '$–$$',   9)
+ON CONFLICT (slug) DO NOTHING;
 
 
 -- ─────────────────────────────────────────────────────────
@@ -169,9 +181,13 @@ CREATE TABLE IF NOT EXISTS poojas (
 
 ALTER TABLE remedies ENABLE ROW LEVEL SECURITY;
 ALTER TABLE poojas   ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "remedies_public_read" ON remedies;
 CREATE POLICY "remedies_public_read" ON remedies FOR SELECT TO anon, authenticated USING (active = TRUE);
+DROP POLICY IF EXISTS "remedies_auth_write" ON remedies;
 CREATE POLICY "remedies_auth_write"  ON remedies FOR ALL    TO authenticated USING (true);
+DROP POLICY IF EXISTS "poojas_public_read" ON poojas;
 CREATE POLICY "poojas_public_read"   ON poojas   FOR SELECT TO anon, authenticated USING (true);
+DROP POLICY IF EXISTS "poojas_auth_write" ON poojas;
 CREATE POLICY "poojas_auth_write"    ON poojas   FOR ALL    TO authenticated USING (true);
 
 INSERT INTO remedies (slug, title, tagline, icon, category, sort_order) VALUES
@@ -185,7 +201,8 @@ INSERT INTO remedies (slug, title, tagline, icon, category, sort_order) VALUES
   ('black-magic-removal','Black Magic Removal',   'Protection from negative energies',                        'Shield',  'Protection',  8),
   ('spiritual-healing',  'Spiritual Healing',     'Holistic healing through Vedic mantras and yantras',       'Sparkles','Healing',     9),
   ('yantras',            'Yantras',               'Sacred geometric instruments for planetary blessings',     'Grid',    'Tools',      10),
-  ('vastu',              'Vastu Shastra',         'Align your space with Vedic principles',                   'Home',    'Environment',11);
+  ('vastu',              'Vastu Shastra',         'Align your space with Vedic principles',                   'Home',    'Environment',11)
+ON CONFLICT (slug) DO NOTHING;
 
 INSERT INTO poojas (remedy_slug, title, price, requires, day_timing, sort_order) VALUES
   ('poojas-homas', 'Sani Dosha Nivarana Pooja',                       '$151', 'Name, Rashi, Nakshatra, Gothram, scanned photograph',     'Saturdays — Navagraha temple',    1),
@@ -195,7 +212,8 @@ INSERT INTO poojas (remedy_slug, title, price, requires, day_timing, sort_order)
   ('poojas-homas', 'Maha Mruthyunjaya Homam & Japam',                 '$501', 'Date, place and time of birth, scanned photograph',       'Ashram — special scheduling',     5),
   ('poojas-homas', 'Graha Santhi and Japam',                          '$101', 'Date, time and place of birth, Gothram, photograph',      'Day of the afflicted planet',     6),
   ('poojas-homas', 'Sani Vishesa Pooja, Thailabhisekham & Homa Japam','$501', 'Date, time and place of birth, Gothram, photograph',      'Saturdays — Navagraha temple',    7),
-  ('poojas-homas', 'Rahu Ketu Sarpa Pooja, Abhisekam & Homa Japam',  '$501', 'Date, time and place of birth, Gothram, photograph',      'Rahu Kalam — Gurudeva''s ashram', 8);
+  ('poojas-homas', 'Rahu Ketu Sarpa Pooja, Abhisekam & Homa Japam',  '$501', 'Date, time and place of birth, Gothram, photograph',      'Rahu Kalam — Gurudeva''s ashram', 8)
+ON CONFLICT DO NOTHING;
 
 
 -- ─────────────────────────────────────────────────────────
@@ -216,7 +234,9 @@ CREATE TABLE IF NOT EXISTS testimonials (
 );
 
 ALTER TABLE testimonials ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "testimonials_public_read" ON testimonials;
 CREATE POLICY "testimonials_public_read" ON testimonials FOR SELECT TO anon, authenticated USING (approved = TRUE);
+DROP POLICY IF EXISTS "testimonials_auth_write" ON testimonials;
 CREATE POLICY "testimonials_auth_write"  ON testimonials FOR ALL    TO authenticated USING (true);
 
 INSERT INTO testimonials (name, location, service, rating, review_text, avatar, featured, sort_order) VALUES
@@ -227,7 +247,8 @@ INSERT INTO testimonials (name, location, service, rating, review_text, avatar, 
   ('Meena R.',  'London, UK',      'Gemstone Guidance',          5, 'I had been wearing a gemstone from someone else for years with no benefit. Dr. Gurudeva reviewed my chart and suggested a completely different stone. The results within a month were remarkable.', 'MR', TRUE, 5),
   ('Vikram P.', 'Toronto, Canada', 'Online Consultation',        5, 'Being in Canada, the online video consultation was very convenient. Dr. Gurudeva is punctual, patient and thorough. He took time to explain everything clearly and answered all my questions.', 'VP', TRUE, 6),
   ('Deepa V.',  'Chicago, IL',     'Sade Sati',                  5, 'I was going through the worst period of my life — job loss, health issues, family disputes. Dr. Gurudeva identified Sade Sati and prescribed Saturn remedies. Within 3 months things began improving.', 'DV', FALSE,7),
-  ('Ramesh G.', 'Dallas, TX',      'Kaal Sarpa Dosha',           5, 'Dr. Gurudeva identified Kaal Sarpa Dosha in my chart and explained exactly how it was manifesting in my life. His prescribed Rahu-Ketu pooja and remedies brought visible change.', 'RG', FALSE,8);
+  ('Ramesh G.', 'Dallas, TX',      'Kaal Sarpa Dosha',           5, 'Dr. Gurudeva identified Kaal Sarpa Dosha in my chart and explained exactly how it was manifesting in my life. His prescribed Rahu-Ketu pooja and remedies brought visible change.', 'RG', FALSE,8)
+ON CONFLICT DO NOTHING;
 
 
 -- ─────────────────────────────────────────────────────────
@@ -253,9 +274,13 @@ CREATE TABLE IF NOT EXISTS faq_items (
 
 ALTER TABLE faq_categories ENABLE ROW LEVEL SECURITY;
 ALTER TABLE faq_items      ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "faq_cat_public_read" ON faq_categories;
 CREATE POLICY "faq_cat_public_read"  ON faq_categories FOR SELECT TO anon, authenticated USING (true);
+DROP POLICY IF EXISTS "faq_cat_auth_write" ON faq_categories;
 CREATE POLICY "faq_cat_auth_write"   ON faq_categories FOR ALL    TO authenticated USING (true);
+DROP POLICY IF EXISTS "faq_items_public_read" ON faq_items;
 CREATE POLICY "faq_items_public_read"ON faq_items      FOR SELECT TO anon, authenticated USING (active = TRUE);
+DROP POLICY IF EXISTS "faq_items_auth_write" ON faq_items;
 CREATE POLICY "faq_items_auth_write" ON faq_items      FOR ALL    TO authenticated USING (true);
 
 INSERT INTO faq_categories (name, icon, sort_order) VALUES
@@ -263,7 +288,8 @@ INSERT INTO faq_categories (name, icon, sort_order) VALUES
   ('Pricing & Payment','DollarSign',    2),
   ('Birth Details',    'Clock',         3),
   ('Gemstones',        'Gem',           4),
-  ('Appointment Process','CalendarDays',5);
+  ('Appointment Process','CalendarDays',5)
+ON CONFLICT (name) DO NOTHING;
 
 INSERT INTO faq_items (category_id, question, answer, featured, sort_order) VALUES
   (1,'Is it free to consult Dr. Gurudeva by phone?','Yes — direct phone consultation is free for the first time. Call 732-448-0667 (USA) or 020-8144-6490 (UK), 9 AM–9 PM EST, 7 days a week.', TRUE, 1),
@@ -279,7 +305,8 @@ INSERT INTO faq_items (category_id, question, answer, featured, sort_order) VALU
   (4,'Do I need a chart analysis before wearing a gemstone?','Yes — absolutely. Wearing the wrong gemstone can strengthen malefic planets. Dr. Gurudeva analyzes your full chart first.', FALSE, 1),
   (4,'Can I wear multiple gemstones at once?','Only if the planetary rulers are friendly. Conflicting combinations must be avoided. Get a full chart analysis first.', FALSE, 2),
   (5,'How do I book an online service?','Go to the Inquiry page, select your service, provide birth details and submit. Reply within 24–48 hours.', FALSE, 1),
-  (5,'How do I book a phone or in-person consultation?','Call 732-448-0667 between 9 AM–9 PM EST, 7 days a week.', FALSE, 2);
+  (5,'How do I book a phone or in-person consultation?','Call 732-448-0667 between 9 AM–9 PM EST, 7 days a week.', FALSE, 2)
+ON CONFLICT DO NOTHING;
 
 
 -- ─────────────────────────────────────────────────────────
@@ -301,7 +328,9 @@ CREATE TABLE IF NOT EXISTS articles (
 );
 
 ALTER TABLE articles ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "articles_public_read" ON articles;
 CREATE POLICY "articles_public_read" ON articles FOR SELECT TO anon, authenticated USING (published = TRUE);
+DROP POLICY IF EXISTS "articles_auth_write" ON articles;
 CREATE POLICY "articles_auth_write"  ON articles FOR ALL    TO authenticated USING (true);
 
 CREATE OR REPLACE FUNCTION update_updated_at()
@@ -312,6 +341,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+DROP TRIGGER IF EXISTS articles_updated_at ON articles;
 CREATE TRIGGER articles_updated_at
   BEFORE UPDATE ON articles
   FOR EACH ROW EXECUTE FUNCTION update_updated_at();
@@ -319,7 +349,8 @@ CREATE TRIGGER articles_updated_at
 INSERT INTO articles (slug, title, excerpt, category, read_time, publish_date, featured) VALUES
   ('gem-conflictions',      'Gem Conflictions – Why Some Gemstones Should Never Be Worn Together','Not all gemstones are compatible. Learn which combinations to avoid.','Gemstones',      '6 min', '2024-11-10', TRUE),
   ('about-12-raasis',       'About the 12 Raasis – The 12 Zodiac Signs in Vedic Astrology',      'The 12 Raasis form the foundation of every Vedic horoscope.',       'Astrology Basics','8 min', '2024-10-15', TRUE),
-  ('how-gems-affect-a-person','How Do Gems Affect a Person? The Metaphysics of Vedic Gemstone Therapy','Why certain stones are prescribed in Vedic astrology.',        'Gemstones',      '5 min', '2024-09-20', TRUE);
+  ('how-gems-affect-a-person','How Do Gems Affect a Person? The Metaphysics of Vedic Gemstone Therapy','Why certain stones are prescribed in Vedic astrology.',        'Gemstones',      '5 min', '2024-09-20', TRUE)
+ON CONFLICT (slug) DO NOTHING;
 
 
 -- ─────────────────────────────────────────────────────────
@@ -342,7 +373,9 @@ CREATE TABLE IF NOT EXISTS pricing_plans (
 );
 
 ALTER TABLE pricing_plans ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "pricing_public_read" ON pricing_plans;
 CREATE POLICY "pricing_public_read" ON pricing_plans FOR SELECT TO anon, authenticated USING (active = TRUE);
+DROP POLICY IF EXISTS "pricing_auth_write" ON pricing_plans;
 CREATE POLICY "pricing_auth_write"  ON pricing_plans FOR ALL    TO authenticated USING (true);
 
 INSERT INTO pricing_plans (plan_key, name, price, duration, popular, description, includes, note, cta_label, sort_order) VALUES
@@ -354,7 +387,8 @@ INSERT INTO pricing_plans (plan_key, name, price, duration, popular, description
     'Applies to all standard services: Horoscope, Career, Kundli, Health, Baby Report, Manglik, Kaal Sarp, Sade Sati, etc.', 'Book Online Service', 2),
   ('inperson', 'In-Person Consultation','$31',  'Face-to-face', FALSE, 'Personal face-to-face session at Highland Park, NJ (near Edison Train Station).',
     ARRAY['Face-to-face personal meeting','Full horoscope analysis','Highland Park, NJ — near Edison Train Station','Flexible scheduling by appointment'],
-    'Call 732-448-0667 to schedule.', 'Schedule In-Person', 3);
+    'Call 732-448-0667 to schedule.', 'Schedule In-Person', 3)
+ON CONFLICT (plan_key) DO NOTHING;
 
 
 -- ═════════════════════════════════════════════════════════
