@@ -88,7 +88,7 @@ INSERT INTO services (slug, title, tagline, icon, category, price, popular, sort
   ('online-consultation',     'Online Consultation',         'Detailed written analysis sent within 24–48 hours',           'Globe',      'Core Astrology', '$21',  FALSE, 2),
   ('career-astrology',        'Career Analysis',             'Find the career path your horoscope supports',                'Briefcase',  'Life Areas',     '$21',  FALSE, 3),
   ('marriage-compatibility',  'Kundli Matching',             '36-point horoscope compatibility analysis',                   'Heart',      'Life Areas',     '$21',  FALSE, 4),
-  ('muhurtham',               'Muhurthams / Lagnas',         'Auspicious timing for life''s biggest moments',               'Calendar',   'Timing',         '$21',  FALSE, 5),
+  ('muhurtham',               'Muhurthams / Lagnas',         'Auspicious timing for life''s biggest moments',              'Calendar',   'Timing',         '$21',  FALSE, 5),
   ('lucky-gem-report',        'Find Your Lucky Gem',         'Your ideal gemstone from your birth chart',                   'Gem',        'Gemstones',      '$21',  FALSE, 6),
   ('business-astrology',      'Business & Partnership',      'Planetary guidance for your enterprise',                      'Building2',  'Life Areas',     '$21',  FALSE, 7),
   ('child-health-guidance',   'Family, Child & Health',      'Vedic guidance for family wellbeing and health',              'Activity',   'Life Areas',     '$21',  FALSE, 8),
